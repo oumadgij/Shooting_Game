@@ -19,6 +19,12 @@
     <Filter Include="ソース ファイル\Secene">
       <UniqueIdentifier>{83693eae-e67d-447a-851a-47175b325be4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Base">
+      <UniqueIdentifier>{4dee8c5f-abee-46a1-b70b-9ef7424d39db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Base">
+      <UniqueIdentifier>{237755a4-8686-4246-b56e-dfd9d0aa2fd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,12 +48,15 @@
     <ClCompile Include="KeyInput.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="BulletsBase.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CharaBase.cpp">
+      <Filter>ソース ファイル\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SphereCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CharaBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
@@ -65,14 +74,17 @@
     <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BulletsBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="KeyInput.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletsBase.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CharaBase.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBase.h">
+      <Filter>ヘッダー ファイル\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

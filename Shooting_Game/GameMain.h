@@ -9,10 +9,12 @@ private:
 
 public:
 	//コンストラクタ
-	void HitCheck();
+	GameMain();
 	//デストラクタ
 	virtual ~GameMain() {};
-	AbstractScene* Update() override;
-	void Draw() const override;
+	//当たり判定
+	void HitCheck();
+	virtual AbstractScene* Update() override;
+	virtual void Draw() const override;
 };
 

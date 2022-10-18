@@ -15,9 +15,9 @@ public:
 	}
 
 	//•`‰æˆÈŠO‚ÌXV‚ğÀ‘•
-	AbstractScene* Update() override;
+	virtual AbstractScene* Update() override;
 
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
-	void Draw() const override;
+	virtual void Draw() const override;
 };
 
