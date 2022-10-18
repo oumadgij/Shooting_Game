@@ -10,6 +10,6 @@ public:
 	int GetDamage()const { return damage; }
 
 private:
-	int damage;
-	int speed;
+	int damage;   //ダメージ
+	int speed;    //スピード
 };

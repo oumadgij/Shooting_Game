@@ -7,6 +7,6 @@ int KeyInput::oldKey;
 void KeyInput::Update()
 {
 	oldKey = nowKey;
-	nowKey = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	keyFlg = nowKey&~oldKey;  //ê‡‚É‚æ‚Á‚Ä‚±‚±‚Í‚¢‚ç‚È‚¢
+	nowKey = GetMouseInput();
+	//keyFlg = nowKey&~oldKey;  //ê‡‚É‚æ‚Á‚Ä‚±‚±‚Í‚¢‚ç‚È‚¢
 }

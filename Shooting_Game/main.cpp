@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "SceneManager.h"
 #include "GameMain.h"
+#include "KeyInput.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	LPSTR lpCmdLine, int nCmdShow)
@@ -16,7 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr))
 	{
 		ClearDrawScreen();    //‰æ–Ê‚Ì‰Šú‰»
-
+		KeyInput::Update();
 		sceneMng.Draw();
 
 		ScreenFlip();   //— ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f

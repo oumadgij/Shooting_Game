@@ -14,6 +14,7 @@ public:
 	int GetScore()const { return score; }
 
 private:
+	int x, y;    //X座標,Y座標
 	int score;   //スコア
 	int life;    //HP
 };
