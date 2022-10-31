@@ -6,7 +6,7 @@ public:
 	int GetLocation()const { return location; }
 	void SetLocation(int location) { this->location = location; }
 
-private:
+protected:
 	int location;     //’†SÀ•W
 	int radius;       //”¼Œa
 };

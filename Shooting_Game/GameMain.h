@@ -1,11 +1,12 @@
 #pragma once
 #include "AbstractScene.h"
 #include "Player.h"
+#include "Enemy.h"
 class GameMain : public AbstractScene
 {
 private:
 	Player player;
-	int* enemy[10];    //ポインタ配列　仮置き　 TO DO
+	Enemy** enemy[10];    //ポインタ配列　仮置き　 TO DO
 
 public:
 	//コンストラクタ

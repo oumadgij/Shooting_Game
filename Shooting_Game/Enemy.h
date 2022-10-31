@@ -1,7 +1,7 @@
 #pragma once
 #include "CharaBase.h"
-#include "BulletsBase.h"
-class Enemy : public CharaBase, public BulletsBase
+#include "SphereCollider.h"
+class Enemy : public CharaBase, public SphereCollider
 {
 public:
 	//コンストラクタ

@@ -3,7 +3,8 @@
 BulletsBase::BulletsBase()
 {
 	damage = 0;
-	speed = 0;
-	x = 0;
-	y = 0;
+	speed = 8;
+	bulletx = 0;
+	bullety = 0;
+	shotflg=false;
 }

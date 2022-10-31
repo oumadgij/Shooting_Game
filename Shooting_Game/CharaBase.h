@@ -1,5 +1,6 @@
 #pragma once
-class CharaBase
+#include "BulletsBase.h"
+class CharaBase :public BulletsBase
 {
 public:
 	//コンストラクタ
@@ -13,10 +14,10 @@ public:
 	//当たり判定
 	virtual void Hit() = 0;
 
-	int* GetBullets()const { return this->bullets[0]; }
+	CharaBase* GetBullets(int bullet)const { return this->bullets[bullet]; }
 	
 protected:
 	int image;
-	int* bullets[10];  //弾　仮置き TO DO
+	CharaBase* bullets[30];  //弾　仮置き TO DO
 	int speed;
 };

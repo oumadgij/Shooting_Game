@@ -2,5 +2,6 @@
 
 void SphereCollider::HitSphere()
 {
-
+	location = 0;
+	radius = 10;
 }

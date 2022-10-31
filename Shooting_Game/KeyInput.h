@@ -3,7 +3,7 @@ class KeyInput
 {
 public:
 	static void Update();
-	static bool OnPressed(int inputkey)
+	static bool OnPressed(int inputkey) //マウスがクリックされているか
 	{
 		bool ret = (nowKey & inputkey);
 		return ret;
