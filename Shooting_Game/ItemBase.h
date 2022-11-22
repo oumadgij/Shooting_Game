@@ -1,10 +1,12 @@
 #pragma once
+#include "SphereCollider.h"
 
-class ItemBase
+class ItemBase:public SphereCollider
 {
 public:
 	//コンストラクタ
 	ItemBase();
+	//ItemBase(int location,int radius, int type,int speed); メモ
 	//デストラクタ
 	virtual ~ItemBase() {};
 	//描画以外の更新を実装
@@ -14,6 +16,7 @@ public:
 	int GetType()const { return type; }
 
 private:
-	int speed;
 	int type;
+protected:
+	int speed;
 };

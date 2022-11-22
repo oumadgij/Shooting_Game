@@ -1,11 +1,14 @@
 #pragma once
 #include "CharaBase.h"
 #include "SphereCollider.h"
+#include "DxLib.h"
+
 class Player : public CharaBase,public SphereCollider
 {
 public:
 	//コンストラクタ
 	Player();
+	//Player(int x, int y, int score, int life);
 	//描画以外の更新を実装
 	virtual void Update()override;
 	//描画に関することを実装
@@ -16,7 +19,7 @@ public:
 	int GetScore()const { return score; }
 
 private:
-	int x, y;    //X座標,Y座標
+	int x, y;
 	int score;   //スコア
 	int life;    //HP
 };

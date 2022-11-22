@@ -3,5 +3,5 @@
 void SphereCollider::HitSphere()
 {
 	location = 0;
-	radius = 10;
+	radius = 5;
 }

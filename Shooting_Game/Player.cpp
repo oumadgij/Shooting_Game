@@ -1,38 +1,51 @@
 #include "Player.h"
-#include "DxLib.h"
 #include "KeyInput.h"
-
-#define MAX_SHOT 30
+#include "BulletStraight.h"
 
 Player::Player()
 {
-	life = 0;
-	score = 0;
 	x = 0;
 	y = 0;
+	life = 0;
+	score = 0;
+	bullets = new BulletsBase * [30];
+	for (int i = 0; i < 30; i++)
+	{
+		bullets[i] = nullptr;
+	}
 }
 
 void Player::Update()
 {
-	GetMousePoint(&x, &y);   //マウスの座標を自機に
+	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
 
+	int bulletcount = 0;
 	if (KeyInput::OnPressed(MOUSE_INPUT_LEFT))
 	{
-		if (shotflg==false)
+		for (bulletcount = 0; bulletcount < 30; bulletcount++)
 		{
-			bullety = y;
-			bulletx = x;
-			shotflg = !shotflg;
+			if (bullets[bulletcount] == nullptr)
+			{
+				bullets[bulletcount] = new BulletStraight(static_cast<float>(x), static_cast<float>(y));
+				break;
+			}
 		}
 	}
 
-	if (shotflg && bullety < 0)
+	for (int i = 0; i < 30; i++)
 	{
-		shotflg = !shotflg;
-	}
-	else
-	{
-		bullety -= BulletsBase::speed;
+		if (bullets[i] != nullptr)
+		{
+			bullets[i]->Update();
+			if (bullets[i]->GetBulletY() < 0)
+			{
+				bullets[i] = nullptr;
+			}
+		}
+		else
+		{
+			break;
+		}
 	}
 }
 
@@ -48,10 +61,20 @@ void Player::LifeCheck()
 
 void Player::Draw()const
 {
+//#define DEBUG
+#ifdef DEBUG
+
+#endif // DEBUG
+
+
 	DrawCircle(x, y, 10, GetColor(225, 0, 0), TRUE);
-	if (shotflg)
+
+	for (int i = 0; i < 30; i++)
 	{
-		DrawCircle(bulletx, bullety, 10, GetColor(255, 0, 100), TRUE);
-		DrawString(0, 0, "OnPressed", GetColor(255, 0, 100));
+		if (bullets[i] == nullptr)
+		{
+			break;
+		}
+		bullets[i]->Draw();
 	}
 }
