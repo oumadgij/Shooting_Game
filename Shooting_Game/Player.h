@@ -1,7 +1,6 @@
 #pragma once
 #include "CharaBase.h"
 #include "SphereCollider.h"
-#include "DxLib.h"
 
 class Player : public CharaBase,public SphereCollider
 {
