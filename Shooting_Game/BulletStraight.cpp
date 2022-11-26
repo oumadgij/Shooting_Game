@@ -1,21 +1,21 @@
 #include "BulletStraight.h"
 
-BulletStraight::BulletStraight(float x, float y)
+BulletStraight::BulletStraight(float x, float y,float sp)
 {
 	Vbullet.x = x;
 	Vbullet.y = y;
 	Vbullet.z = 0;
-	speed = 8.f;
+	speed = sp;
 	damage = 0;
 	image = 0;
 }
 
 void BulletStraight::Update()
 {
-	Vbullet.y -= speed;
+	Vbullet.y += speed;
 }
 
 void BulletStraight::Draw()const
 {
-	DrawCircle(Vbullet.x, Vbullet.y, 5, GetColor(100, 180, 0), TRUE);
+	DrawCircle(static_cast<int>(Vbullet.x), static_cast<int>(Vbullet.y), 5, GetColor(100, 180, 0), TRUE);
 }

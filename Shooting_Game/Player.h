@@ -21,5 +21,6 @@ private:
 	int x, y;
 	int score;   //ÉXÉRÉA
 	int life;    //HP
+	int shotCount;
 };
 

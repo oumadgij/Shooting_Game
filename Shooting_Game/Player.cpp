@@ -1,13 +1,16 @@
 #include "Player.h"
 #include "KeyInput.h"
 #include "BulletStraight.h"
-#define MAX_SHOT 100
+#define MAX_SHOT 30
 
 Player::Player()
 {
 	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
+	vchara.x = static_cast<float>(x);
+	vchara.y = static_cast<float>(y);
 	life = 0;
 	score = 0;
+	shotCount = 0;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -18,6 +21,12 @@ Player::Player()
 void Player::Update()
 {
 	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
+	vchara.x = static_cast<float>(x);
+	vchara.y = static_cast<float>(y);
+	if (vchara.x < 0) vchara.x = 0.f;
+	else if (vchara.x > 1280) vchara.x = 1280.f;
+	if (vchara.y < 0) vchara.y = 0.f;
+	else if (vchara.y > 720) vchara.y = 720.f;
 
 	int bulletcount = 0;
 	
@@ -29,9 +38,9 @@ void Player::Update()
 		}
 	}
 
-	if (KeyInput::OnPressed(MOUSE_INPUT_LEFT))
+	if ((shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
-		bullets[bulletcount] = new BulletStraight(static_cast<float>(x), static_cast<float>(y));
+		bullets[bulletcount] = new BulletStraight(vchara.x, vchara.y,-5.f);
 	}
 
 	for (int i = 0; i < MAX_SHOT; i++)
@@ -39,7 +48,7 @@ void Player::Update()
 		if (bullets[i] != nullptr)
 		{
 			bullets[i]->Update();
-			if (bullets[i]->GetBulletY() < 0)
+			if (bullets[i]->GetBulletY() < 0)  //弾が上の画面外に行ったら消す
 			{
 				delete bullets[i];
 				bullets[i] = nullptr;
@@ -51,7 +60,7 @@ void Player::Update()
 		}
 	}
 
-
+	++shotCount;
 }
 
 void Player::Hit()
@@ -71,16 +80,11 @@ void Player::Draw()const
 #endif // DEBUG
 
 
-	DrawCircle(x, y, 10, GetColor(225, 0, 0), TRUE);
+	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), 10, GetColor(225, 0, 0), TRUE);
 
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
-		if (bullets[i] == nullptr)
-		{
-			continue;
-		}
+		if (bullets[i] == nullptr) continue;
 		bullets[i]->Draw();
-		DrawFormatString(0, i * 20, 0xffffff, "%2d", i);
-		DrawFormatString(100, i * 20, 0xffffff, "%3d", bullets[i]->GetBulletY());
 	}
 }

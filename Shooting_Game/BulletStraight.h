@@ -4,7 +4,7 @@
 class BulletStraight :public BulletsBase
 {
 public:
-	BulletStraight(float x, float y);
+	BulletStraight(float x, float y,float speed);
 	//~BulletStraight();
 	//•`‰æˆÈŠO‚ÌXV‚ğÀ‘•
 	void Update()override;

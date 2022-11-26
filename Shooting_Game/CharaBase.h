@@ -1,5 +1,6 @@
 #pragma once
 #include "BulletsBase.h"
+#include "DxLib.h"
 class CharaBase
 {
 public:
@@ -16,9 +17,11 @@ public:
 
 	//GetBullets()　　メモ
 	BulletsBase** GetBullets()const { return bullets; }
+	float GetY()const { return vchara.y; }
 	
 protected:
 	int image;
-	int speed;
+	float speed;
+	VECTOR vchara;
 	BulletsBase** bullets;  //弾　仮置き TO DO
 };

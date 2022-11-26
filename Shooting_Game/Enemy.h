@@ -5,7 +5,7 @@ class Enemy : public CharaBase, public SphereCollider
 {
 public:
 	//コンストラクタ
-	Enemy();
+	Enemy(float x,float y);
 	//描画以外の更新を実装
 	virtual void Update() override;
 	//描画に関することを実装
@@ -19,5 +19,6 @@ public:
 private:
 	int hp;
 	int point;
+	int shotCount;
 };
 
