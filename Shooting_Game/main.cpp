@@ -9,7 +9,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetMainWindowText("シューティングゲーム");
 
 	ChangeWindowMode(TRUE);           //ウィンドウモードで起動
-	SetGraphMode(1280, 720, 32);      //画面モードの変更
+	SetWindowSize(1280, 720);         //画面サイズの変更
+	SetGraphMode(1280, 720, 16);      //画面モードの変更
 	if (DxLib_Init() == -1) return -1;   //DXライブラリ初期化処理
 	SetDrawScreen(DX_SCREEN_BACK);     //描画先画面を裏に設定
 

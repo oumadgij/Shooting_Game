@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "KeyInput.h"
 #include "BulletStraight.h"
-#define MAX_SHOT 30
+#include "common.h"
 
 Player::Player()
 {
@@ -9,6 +9,7 @@ Player::Player()
 	vchara.x = static_cast<float>(x);
 	vchara.y = static_cast<float>(y);
 	life = 0;
+	radius = 10;
 	score = 0;
 	shotCount = 0;
 	bullets = new BulletsBase * [MAX_SHOT];
@@ -80,7 +81,7 @@ void Player::Draw()const
 #endif // DEBUG
 
 
-	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), 10, GetColor(225, 0, 0), TRUE);
+	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), radius, GetColor(225, 0, 0), TRUE);
 
 	for (int i = 0; i < MAX_SHOT; i++)
 	{

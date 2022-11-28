@@ -12,7 +12,7 @@ public:
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
 	virtual void Draw()const = 0;
 	int GetDamage()const { return damage; }
-	float GetBulletY()const { return Vbullet.y; }
+	VECTOR GetVector()const { return Vbullet; }
 
 protected:
 	int damage;   //ƒ_ƒ[ƒW

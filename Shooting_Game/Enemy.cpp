@@ -1,17 +1,18 @@
 #include "Enemy.h"
 #include "BulletStraight.h"
-#define MAX_SHOT 3
+#include "common.h"
 
-Enemy::Enemy(float Vx, float Vy)
+Enemy::Enemy(float Vx, float Vy,int r)
 {
 	hp = 0;
+	radius = r;
 	point = 0;
 	speed = 1.f;
 	vchara.x = Vx;
 	vchara.y = Vy;
 	shotCount = 0;
-	bullets = new BulletsBase * [MAX_SHOT];
-	for (int i = 0; i < MAX_SHOT; i++)
+	bullets = new BulletsBase * [ENEMY_MAX_SHOT];
+	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
 	{
 		bullets[i] = nullptr;
 	}
@@ -23,7 +24,7 @@ void Enemy::Update()
 
 	int bulletcount = 0;
 
-	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
+	for (bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] == nullptr)
 		{
@@ -31,17 +32,17 @@ void Enemy::Update()
 		}
 	}
 
-	if ((shotCount % 10) == 0)
+	if (shotCount % 20 == 0)
 	{
 		bullets[bulletcount] = new BulletStraight(vchara.x, vchara.y+25,5.f);
 	}
 
-	for (int i = 0; i < MAX_SHOT; i++)
+	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
 	{
 		if (bullets[i] != nullptr)
 		{
 			bullets[i]->Update();
-			if (bullets[i]->GetBulletY() > 720)  //弾が上の画面外に行ったら消す
+			if (bullets[i]->GetVector().y > 720)  //弾が上の画面外に行ったら消す
 			{
 				delete bullets[i];
 				bullets[i] = nullptr;
@@ -68,8 +69,8 @@ void Enemy::HpCheck()
 
 void Enemy::Draw()const
 {
-	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), 20, GetColor(0, 100, 255), TRUE);
-	for (int i = 0; i < MAX_SHOT; i++)
+	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), radius, GetColor(0, 100, 255), TRUE);
+	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
 	{
 		if (bullets[i] == nullptr) continue;
 		bullets[i]->Draw();

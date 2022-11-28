@@ -23,23 +23,25 @@ AbstractScene* GameMain::Update()
 	{
 		if (enemy[i] == nullptr)
 		{
-			enemy[i] = new Enemy(500, 0.f);
+			enemy[i] = new Enemy(500, 0.f, 20);
 		}
 	}
 
 	enemy[0]->Update();
-	if (enemy[0]->GetY() > 720)
+	if (enemy[0]->GetVector().y > 720)
 	{
 		delete enemy[0];
 		enemy[0] = nullptr;
 	}
+
+	HitCheck();
 
 	return this;
 }
 
 void GameMain::HitCheck()
 {
-
+	//if(enemy[0]->GetVector().x)
 }
 
 void GameMain::Draw() const

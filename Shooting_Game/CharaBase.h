@@ -15,9 +15,8 @@ public:
 	//“–‚½‚è”»’è
 	virtual void Hit() = 0;
 
-	//GetBullets()@@ƒƒ‚
 	BulletsBase** GetBullets()const { return bullets; }
-	float GetY()const { return vchara.y; }
+	VECTOR GetVector()const { return vchara; }
 	
 protected:
 	int image;
