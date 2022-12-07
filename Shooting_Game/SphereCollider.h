@@ -1,13 +1,15 @@
 #pragma once
+#include "DxLib.h"
 class SphereCollider
 {
 public:
-	void HitSphere();
-	int GetLocation()const { return location; }
-	void SetLocation(int location) { this->location = location; }
+	bool HitSphere(VECTOR bullets, float Bradius);
+	VECTOR GetLocation()const { return location; }
+	float GetRadius()const { return radius; }
+	void SetLocation(VECTOR location) { this->location = location; }
 
 protected:
-	int location;     //中心座標
-	int radius;       //半径
+	VECTOR location;     //中心座標
+	float radius;       //半径
 };
 

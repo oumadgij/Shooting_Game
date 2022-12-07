@@ -13,14 +13,12 @@ public:
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
 	virtual void Draw()const = 0;
 	//“–‚½‚è”»’è
-	virtual void Hit() = 0;
+	virtual void Hit(int damage) = 0;
 
 	BulletsBase** GetBullets()const { return bullets; }
-	VECTOR GetVector()const { return vchara; }
 	
 protected:
 	int image;
 	float speed;
-	VECTOR vchara;
 	BulletsBase** bullets;  //’e@‰¼’u‚« TO DO
 };

@@ -7,13 +7,12 @@ class Player : public CharaBase,public SphereCollider
 public:
 	//コンストラクタ
 	Player();
-	//Player(int x, int y, int score, int life);
 	//描画以外の更新を実装
 	virtual void Update()override;
 	//描画に関することを実装
 	virtual void Draw()const override;
 	//当たり判定
-	virtual void Hit()override;
+	virtual void Hit(int damage)override;
 	void LifeCheck();
 	int GetScore()const { return score; }
 

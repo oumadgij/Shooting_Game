@@ -1,6 +1,5 @@
 #pragma once
 #include "SphereCollider.h"
-#include "DxLib.h"
 
 class BulletsBase :public SphereCollider
 {
@@ -12,11 +11,9 @@ public:
 	//描画に関することを実装
 	virtual void Draw()const = 0;
 	int GetDamage()const { return damage; }
-	VECTOR GetVector()const { return Vbullet; }
 
 protected:
 	int damage;   //ダメージ
 	float speed;    //スピード
 	int image;
-	VECTOR Vbullet;
 };

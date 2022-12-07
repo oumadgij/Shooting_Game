@@ -2,14 +2,14 @@
 #include "BulletStraight.h"
 #include "common.h"
 
-Enemy::Enemy(float Vx, float Vy,int r)
+Enemy::Enemy(float Vx, float Vy,float r)
 {
-	hp = 0;
+	hp = 10;
 	radius = r;
 	point = 0;
-	speed = 1.f;
-	vchara.x = Vx;
-	vchara.y = Vy;
+	speed = 0.5f;
+	location.x = Vx;
+	location.y = Vy;
 	shotCount = 0;
 	bullets = new BulletsBase * [ENEMY_MAX_SHOT];
 	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
@@ -20,7 +20,7 @@ Enemy::Enemy(float Vx, float Vy,int r)
 
 void Enemy::Update()
 {
-	vchara.y += speed;
+	location.y += speed;
 
 	int bulletcount = 0;
 
@@ -32,47 +32,51 @@ void Enemy::Update()
 		}
 	}
 
-	if (shotCount % 20 == 0)
+	if (shotCount % 60 == 0)
 	{
-		bullets[bulletcount] = new BulletStraight(vchara.x, vchara.y+25,5.f);
+		bullets[bulletcount] = new BulletStraight(location.x, location.y+25,5.f,10);
 	}
 
-	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
+	for (bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
-		if (bullets[i] != nullptr)
+		if (bullets[bulletcount] != nullptr)
 		{
-			bullets[i]->Update();
-			if (bullets[i]->GetVector().y > 720)  //弾が上の画面外に行ったら消す
+			bullets[bulletcount]->Update();//弾を動かす
+			if (bullets[bulletcount]->GetLocation().y > 720) //弾が下の画面外に行ったか
 			{
-				delete bullets[i];
-				bullets[i] = nullptr;
+				//画面外に行ったとき
+				delete bullets[bulletcount];
+				bullets[bulletcount] = nullptr;
 			}
-		}
-		else
-		{
-			continue;
 		}
 	}
 
 	++shotCount;
 }
 
-void Enemy::Hit()
+void Enemy::Hit(int damage)
 {
-
+	hp -= damage;
 }
 
-void Enemy::HpCheck()
+bool Enemy::HpCheck()
 {
-
+	if (hp <= 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Enemy::Draw()const
 {
-	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), radius, GetColor(0, 100, 255), TRUE);
-	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
+	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(0, 100, 255), TRUE);
+	for (int bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
-		if (bullets[i] == nullptr) continue;
-		bullets[i]->Draw();
+		if (bullets[bulletcount] != nullptr)
+		{
+			bullets[bulletcount]->Draw();
+		}
 	}
+	DrawFormatString(0, 0, 0xff0000, "Enemy HP = %2d", hp);
 }

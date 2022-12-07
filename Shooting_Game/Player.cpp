@@ -6,8 +6,8 @@
 Player::Player()
 {
 	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
-	vchara.x = static_cast<float>(x);
-	vchara.y = static_cast<float>(y);
+	location.x = static_cast<float>(x);
+	location.y = static_cast<float>(y);
 	life = 0;
 	radius = 10;
 	score = 0;
@@ -22,15 +22,17 @@ Player::Player()
 void Player::Update()
 {
 	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
-	vchara.x = static_cast<float>(x);
-	vchara.y = static_cast<float>(y);
-	if (vchara.x < 0) vchara.x = 0.f;
-	else if (vchara.x > 1280) vchara.x = 1280.f;
-	if (vchara.y < 0) vchara.y = 0.f;
-	else if (vchara.y > 720) vchara.y = 720.f;
+	location.x = static_cast<float>(x);
+	location.y = static_cast<float>(y);
+	//自機が画面外に行かないようにする
+	if (location.x < 0) location.x = 0.f;
+	else if (location.x > 1280) location.x = 1280.f;
+	if (location.y < 0) location.y = 0.f;
+	else if (location.y > 720) location.y = 720.f;
 
 	int bulletcount = 0;
 	
+	//空いている弾を探す
 	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] == nullptr)
@@ -41,30 +43,26 @@ void Player::Update()
 
 	if ((shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
-		bullets[bulletcount] = new BulletStraight(vchara.x, vchara.y,-5.f);
+		bullets[bulletcount] = new BulletStraight(location.x, location.y,-5.f,5);
 	}
 
-	for (int i = 0; i < MAX_SHOT; i++)
+	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
 	{
-		if (bullets[i] != nullptr)
+		if (bullets[bulletcount] != nullptr)
 		{
-			bullets[i]->Update();
-			if (bullets[i]->GetBulletY() < 0)  //弾が上の画面外に行ったら消す
+			bullets[bulletcount]->Update();  //弾を動かす
+			if (bullets[bulletcount]->GetLocation().y < 0)  //弾が上の画面外に行ったら消す
 			{
-				delete bullets[i];
-				bullets[i] = nullptr;
+				delete bullets[bulletcount];
+				bullets[bulletcount] = nullptr;
 			}
-		}
-		else
-		{
-			continue;
 		}
 	}
 
 	++shotCount;
 }
 
-void Player::Hit()
+void Player::Hit(int damage)
 {
 
 }
@@ -81,11 +79,13 @@ void Player::Draw()const
 #endif // DEBUG
 
 
-	DrawCircle(static_cast<int>(vchara.x), static_cast<int>(vchara.y), radius, GetColor(225, 0, 0), TRUE);
+	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(225, 0, 0), TRUE);
 
-	for (int i = 0; i < MAX_SHOT; i++)
+	for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
 	{
-		if (bullets[i] == nullptr) continue;
-		bullets[i]->Draw();
+		if (bullets[bulletcount] != nullptr)
+		{
+			bullets[bulletcount]->Draw();
+		}
 	}
 }
