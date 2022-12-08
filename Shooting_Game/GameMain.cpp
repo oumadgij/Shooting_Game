@@ -5,23 +5,23 @@
 GameMain::GameMain()
 {
 	player = new Player;
-	enemy = new Enemy * [10];
-	for (int i = 0; i < 10; i++)
-	{
-		enemy[i] = nullptr;
-	}
-	item = new ItemBase * [10];
-	for (int i = 0; i < 10; i++)
-	{
-		item[i] = nullptr;
-	}
-	enemy[0] = new Enemy(500, 0.f, 30);
+enemy = new Enemy * [10];
+for (int i = 0; i < 10; i++)
+{
+	enemy[i] = nullptr;
+}
+item = new ItemBase * [10];
+for (int i = 0; i < 10; i++)
+{
+	item[i] = nullptr;
+}
+enemy[0] = new Enemy(500, 0.f, 30);
 }
 
 AbstractScene* GameMain::Update()
 {
 	player->Update();
-	int enemyCount;
+	//int enemyCount;
 	//エネミーが存在しているかどうか
 	/*for (enemyCount = 0; enemyCount < 10; enemyCount++)
 	{
@@ -52,8 +52,8 @@ AbstractScene* GameMain::Update()
 			enemy[0] = nullptr;
 		}
 	}
-	
-	
+
+
 	HitCheck();
 
 	return this;
@@ -65,7 +65,7 @@ void GameMain::HitCheck()
 	bullet = player->GetBullets();
 	/*プレイヤーの弾とエネミーの当たり判定*/
 	for (int enemyCount = 0; enemyCount < 10; enemyCount++)
-	{	
+	{
 		//エネミーが存在する時
 		if (enemy[enemyCount] != nullptr)
 		{
@@ -78,7 +78,7 @@ void GameMain::HitCheck()
 					if (enemy[enemyCount]->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
 					{
 						//当たった時
-						enemy[enemyCount]->Hit(bullet[bulletCount]->GetDamage());  //エネミーにダメージを与える
+						enemy[enemyCount]->Hit(bullet[bulletCount]->GetDamage());  //エネミーのHPを減らす
 						delete bullet[bulletCount];   //弾を消す
 						bullet[bulletCount] = nullptr;
 					}
@@ -89,6 +89,27 @@ void GameMain::HitCheck()
 						enemy[enemyCount] = nullptr;
 						break;
 					}
+				}
+			}
+		}
+	}
+	/*エネミーの弾とプレイヤーの当たり判定*/
+	for (int enemyCount = 0; enemyCount < 10; enemyCount++)
+	{   //エネミーが存在するかどうか
+		if (enemy[enemyCount] == nullptr) break;
+		bullet = enemy[enemyCount]->GetBullets();
+
+		for (int bulletCount = 0; bulletCount < 30; bulletCount++)
+		{
+			//弾が存在する時
+			if (bullet[bulletCount] != nullptr)
+			{   //エネミーの弾がプレイヤーに当たったか
+				if (player->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
+				{
+					//当たった時
+					player->Hit(bullet[bulletCount]->GetDamage());  //プレイヤーのHPを減らす
+					delete bullet[bulletCount];   //弾を消す
+					bullet[bulletCount] = nullptr;
 				}
 			}
 		}

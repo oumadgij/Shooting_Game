@@ -8,7 +8,7 @@ Player::Player()
 	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
 	location.x = static_cast<float>(x);
 	location.y = static_cast<float>(y);
-	life = 0;
+	life = 10;
 	radius = 10;
 	score = 0;
 	shotCount = 0;
@@ -64,7 +64,7 @@ void Player::Update()
 
 void Player::Hit(int damage)
 {
-
+	life -= damage;
 }
 
 void Player::LifeCheck()
@@ -88,4 +88,6 @@ void Player::Draw()const
 			bullets[bulletcount]->Draw();
 		}
 	}
+
+	DrawFormatString(0, 100, 0x00ff00, "Player Life = %d", life);
 }
