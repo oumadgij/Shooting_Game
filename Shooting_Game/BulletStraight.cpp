@@ -18,5 +18,4 @@ void BulletStraight::Update()
 
 void BulletStraight::Draw()const
 {
-	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(100, 180, 0), TRUE);
 }

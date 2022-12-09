@@ -53,8 +53,7 @@ void Player::Update()
 			bullets[bulletcount]->Update();  //弾を動かす
 			if (bullets[bulletcount]->GetLocation().y < 0)  //弾が上の画面外に行ったら消す
 			{
-				delete bullets[bulletcount];
-				bullets[bulletcount] = nullptr;
+				DeleteBullet(bulletcount);
 			}
 		}
 	}
@@ -72,10 +71,18 @@ void Player::LifeCheck()
 
 }
 
+void Player::DeleteBullet(int bulletcount)
+{
+	delete bullets[bulletcount];
+	bullets[bulletcount] = nullptr;
+}
+
 void Player::Draw()const
 {
 #define DEBUG
 #ifdef DEBUG
+	DrawString(0, 0, "プレイヤー", 0x00ff00);
+	DrawFormatString(0, 30, 0xffffff, "Player Life = %d", life);
 #endif // DEBUG
 
 
@@ -85,9 +92,7 @@ void Player::Draw()const
 	{
 		if (bullets[bulletcount] != nullptr)
 		{
-			bullets[bulletcount]->Draw();
+			DrawCircle(static_cast<int>(bullets[bulletcount]->GetLocation().x), static_cast<int>(bullets[bulletcount]->GetLocation().y), static_cast<int>(bullets[bulletcount]->GetRadius()), GetColor(100, 180, 0), TRUE);
 		}
 	}
-
-	DrawFormatString(0, 100, 0x00ff00, "Player Life = %d", life);
 }

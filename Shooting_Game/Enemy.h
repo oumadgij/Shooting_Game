@@ -15,6 +15,8 @@ public:
 	//Hp‚ª0‚©
 	bool HpCheck();
 	int GetPoint()const { return point; }
+	int GetHP()const { return hp; }
+	void DeleteBullet(int bulletcount);
 
 private:
 	int hp;

@@ -5,7 +5,6 @@ class ItemBase:public SphereCollider
 {
 public:
 	//コンストラクタ
-	ItemBase();
 	//ItemBase(int location,int radius, int type,int speed); メモ
 	//デストラクタ
 	virtual ~ItemBase() {};

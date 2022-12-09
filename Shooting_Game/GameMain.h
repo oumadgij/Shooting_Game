@@ -5,11 +5,6 @@
 #include "ItemBase.h"
 class GameMain : public AbstractScene
 {
-private:
-	Player *player;
-	Enemy** enemy;    //ポインタ配列　仮置き　 TO DO
-	ItemBase** item;
-
 public:
 	//コンストラクタ
 	GameMain();
@@ -24,5 +19,12 @@ public:
 	void HitCheck();
 	virtual AbstractScene* Update() override;
 	virtual void Draw() const override;
+
+private:
+	int waittime;
+
+	Player* player;
+	Enemy** enemy;    //ポインタ配列
+	ItemBase** item;
 };
 

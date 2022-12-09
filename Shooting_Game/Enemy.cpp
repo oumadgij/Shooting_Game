@@ -32,7 +32,7 @@ void Enemy::Update()
 		}
 	}
 
-	if (shotCount % 60 == 0)
+	if (++shotCount % 60 == 0)
 	{
 		bullets[bulletcount] = new BulletStraight(location.x, location.y+25,5.f,10);
 	}
@@ -45,13 +45,10 @@ void Enemy::Update()
 			if (bullets[bulletcount]->GetLocation().y > 720) //弾が下の画面外に行ったか
 			{
 				//画面外に行ったとき
-				delete bullets[bulletcount];
-				bullets[bulletcount] = nullptr;
+				DeleteBullet(bulletcount);
 			}
 		}
 	}
-
-	++shotCount;
 }
 
 void Enemy::Hit(int damage)
@@ -70,13 +67,23 @@ bool Enemy::HpCheck()
 
 void Enemy::Draw()const
 {
+#define DEBUG
+#ifdef DEBUG
+#endif // DEBUG
+
+
 	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(0, 100, 255), TRUE);
 	for (int bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] != nullptr)
 		{
-			bullets[bulletcount]->Draw();
+			DrawCircle(static_cast<int>(bullets[bulletcount]->GetLocation().x), static_cast<int>(bullets[bulletcount]->GetLocation().y), static_cast<int>(bullets[bulletcount]->GetRadius()), GetColor(255, 180, 0), TRUE);
 		}
 	}
-	DrawFormatString(0, 0, 0xff0000, "Enemy HP = %2d", hp);
+}
+
+void Enemy::DeleteBullet(int bulletcount)
+{
+	delete bullets[bulletcount];
+	bullets[bulletcount] = nullptr;
 }

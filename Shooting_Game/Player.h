@@ -14,6 +14,7 @@ public:
 	//“–‚½‚è”»’è
 	virtual void Hit(int damage)override;
 	void LifeCheck();
+	void DeleteBullet(int bulletcount);
 	int GetScore()const { return score; }
 
 private:

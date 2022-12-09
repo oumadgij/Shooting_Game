@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "GameMain.h"
 #include "KeyInput.h"
+#include "common.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	LPSTR lpCmdLine, int nCmdShow)
@@ -9,8 +10,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetMainWindowText("シューティングゲーム");
 
 	ChangeWindowMode(TRUE);           //ウィンドウモードで起動
-	SetWindowSize(1280, 720);         //画面サイズの変更
-	SetGraphMode(1280, 720, 16);      //画面モードの変更
+	SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);         //画面サイズの変更
+	SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 16);      //画面モードの変更
 	if (DxLib_Init() == -1) return -1;   //DXライブラリ初期化処理
 	SetDrawScreen(DX_SCREEN_BACK);     //描画先画面を裏に設定
 
