@@ -1,21 +1,34 @@
 #pragma once
 #include "SphereCollider.h"
 
+enum class ITEM_TYPE
+{
+	HP = 0,
+	DEFAULT
+};
+
+enum class ITEM_EFFECTS
+{
+	HEAL = 10,
+	DEFAULT
+};
+
 class ItemBase:public SphereCollider
 {
 public:
 	//コンストラクタ
-	//ItemBase(int location,int radius, int type,int speed); メモ
+	ItemBase();
 	//デストラクタ
 	virtual ~ItemBase() {};
 	//描画以外の更新を実装
 	virtual void Update() = 0;
 	//描画に関することを実装
 	virtual void Draw()const = 0;
-	int GetType()const { return type; }
+	ITEM_TYPE GetType()const { return type; }
+	ITEM_EFFECTS GetEffects()const { return effects; }
 
-private:
-	int type;
 protected:
-	int speed;
+	float speed;
+	ITEM_TYPE type;
+	ITEM_EFFECTS effects;
 };

@@ -66,6 +66,14 @@ void Player::Hit(int damage)
 	life -= damage;
 }
 
+void Player::Hit(ITEM_TYPE item, int effects)
+{
+	if (item == ITEM_TYPE::HP)
+	{
+		life += effects;
+	}
+}
+
 void Player::LifeCheck()
 {
 

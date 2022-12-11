@@ -1,7 +1,7 @@
 #include "GameMain.h"
 #include "DxLib.h"
 #include "common.h"
-#include <time.h>
+#include "DropItem.h"
 
 GameMain::GameMain()
 {
@@ -23,13 +23,12 @@ AbstractScene* GameMain::Update()
 {
 	player->Update();
 	int enemyCount;
-	//エネミーが存在しているかどうか
 	if (++waittime % 100 == 0)
 	{
 		for (enemyCount = 0; enemyCount < 10; enemyCount++)
 		{
-			if (enemy[enemyCount] == nullptr)
-			{
+			if (enemy[enemyCount] == nullptr)//エネミーが存在しない時
+			{   //ランダム位置にエネミーを配置する
 				enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
 				waittime = 0;
 				break;
@@ -39,17 +38,30 @@ AbstractScene* GameMain::Update()
 	
 	for (enemyCount = 0; enemyCount < 10; enemyCount++)
 	{
-		if (enemy[enemyCount] != nullptr)
+		if (enemy[enemyCount] != nullptr)  //エネミーが存在する時
 		{
-			enemy[enemyCount]->Update();
-			if (enemy[enemyCount]->GetLocation().y-30 > 720)  //エネミーが画面外に行ったか
-			{
+			enemy[enemyCount]->Update(); //エネミーを動かす
+			if (enemy[enemyCount]->GetLocation().y-30 > 720)  //エネミーが画面外に行った時
+			{   //エネミーを消す
 				delete enemy[enemyCount];
 				enemy[enemyCount] = nullptr;
 			}
 		}
 	}
 
+	for (int itemCount = 0; itemCount < 10; itemCount++)
+	{
+		if (item[itemCount] != nullptr)  //アイテムが存在する時
+		{
+			item[itemCount]->Update();
+			if (item[itemCount]->GetLocation().y - 5 > 720) //エネミーが画面外に行った時
+			{
+				//アイテムを消す
+				delete item[itemCount];
+				item[itemCount] = nullptr;
+			}
+		}
+	}
 
 	HitCheck();
 
@@ -80,7 +92,17 @@ void GameMain::HitCheck()
 					}
 					//エネミーのHPが０になったか
 					if (enemy[enemyCount]->HpCheck())
-					{
+					{  
+						for (int itemCount = 0; itemCount < 10; itemCount++)
+						{
+							if (item[itemCount] == nullptr)
+							{
+								//アイテムを生成する
+								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, 0, 0.8f);
+								break;
+							}
+						}
+						//エネミーを消す
 						delete enemy[enemyCount];
 						enemy[enemyCount] = nullptr;
 						break;
@@ -108,6 +130,20 @@ void GameMain::HitCheck()
 					enemy[enemyCount]->DeleteBullet(bulletCount); //弾を消す
 				}
 			}
+		}
+	}
+
+	/*アイテムとプレイヤーの当たり判定*/
+	for (int itemCount = 0; itemCount < 10; itemCount++)
+	{   //アイテムが存在するか
+		if (item[itemCount] == nullptr) continue;
+
+		//プレイヤーがアイテムに当たったか
+		if (item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
+		{   //アイテムの効果をプレイヤーに反映する
+			player->Hit(item[itemCount]->GetType(), static_cast<int>(item[itemCount]->GetEffects()));
+			delete item[itemCount];
+			item[itemCount] = nullptr;
 		}
 	}
 }
@@ -146,9 +182,11 @@ void GameMain::Draw() const
 			enemy[enemyCount]->Draw();
 		}
 	}
-
-	/*if (enemy[0] != nullptr)
+	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{
-		enemy[0]->Draw();
-	}*/
+		if (item[itemCount] != nullptr)  //アイテムが存在する時
+		{
+			item[itemCount]->Draw();
+		}
+	}
 }
