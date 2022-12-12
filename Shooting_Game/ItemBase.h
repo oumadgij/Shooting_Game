@@ -3,13 +3,15 @@
 
 enum class ITEM_TYPE
 {
-	HP = 0,
+	HEAL = 0,   //HP‰ñ•œ
+	ATTACK,     //UŒ‚—ÍƒAƒbƒv
 	DEFAULT
 };
 
 enum class ITEM_EFFECTS
 {
-	HEAL = 10,
+	HEAL = 10,  //‰ñ•œ—Ê
+	ATTACK = 3, //ã‚ª‚éUŒ‚—Í
 	DEFAULT
 };
 

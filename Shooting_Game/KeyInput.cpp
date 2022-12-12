@@ -1,12 +1,16 @@
 #include "KeyInput.h"
 #include "DxLib.h"
 
+int KeyInput::nowMouse;
+int KeyInput::oldMouse;
 int KeyInput::nowKey;
 int KeyInput::oldKey;
 
 void KeyInput::Update()
 {
 	oldKey = nowKey;
-	nowKey = GetMouseInput();
-	//keyFlg = nowKey&~oldKey;  //èÍçáÇ…ÇÊÇ¡ÇƒÇ±Ç±ÇÕÇ¢ÇÁÇ»Ç¢
+	nowKey = GetJoypadInputState(DX_INPUT_KEY);
+
+	oldMouse = nowMouse;
+	nowMouse = GetMouseInput();
 }

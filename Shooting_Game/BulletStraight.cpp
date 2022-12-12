@@ -1,6 +1,6 @@
 #include "BulletStraight.h"
 
-BulletStraight::BulletStraight(float x, float y,float sp,float r)
+BulletStraight::BulletStraight(float x, float y,float sp,float r,int updamage)
 {
 	location.x = x;
 	location.y = y;
@@ -8,6 +8,7 @@ BulletStraight::BulletStraight(float x, float y,float sp,float r)
 	speed = sp;
 	radius = r;
 	damage = 1;
+	damage += updamage;
 	image = 0;
 }
 

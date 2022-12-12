@@ -32,9 +32,9 @@ void Enemy::Update()
 		}
 	}
 
-	if (++shotCount % 60 == 0)
+	if (++shotCount % 120 == 0)
 	{
-		bullets[bulletcount] = new BulletStraight(location.x, location.y+25,5.f,10);
+		bullets[bulletcount] = new BulletStraight(location.x, location.y+25,5.f,10,0);
 	}
 
 	for (bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)

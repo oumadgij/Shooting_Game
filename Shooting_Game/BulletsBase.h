@@ -11,6 +11,7 @@ public:
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
 	virtual void Draw()const = 0;
 	int GetDamage()const { return damage; }
+	void UpDamage(int damage) { this->damage += damage; }
 
 protected:
 	int damage;   //ƒ_ƒ[ƒW

@@ -12,6 +12,7 @@ Player::Player()
 	radius = 10;
 	score = 0;
 	shotCount = 0;
+	upDamage = 0;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -43,7 +44,7 @@ void Player::Update()
 
 	if ((shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
-		bullets[bulletcount] = new BulletStraight(location.x, location.y,-5.f,5);
+		bullets[bulletcount] = new BulletStraight(location.x, location.y,-5.f,5,upDamage);
 	}
 
 	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
@@ -68,9 +69,20 @@ void Player::Hit(int damage)
 
 void Player::Hit(ITEM_TYPE item, int effects)
 {
-	if (item == ITEM_TYPE::HP)
+	if (item == ITEM_TYPE::HEAL)  //HPÇâÒïúÇ∑ÇÈ
 	{
 		life += effects;
+	}
+	if (item == ITEM_TYPE::ATTACK) //çUåÇóÕÇè„Ç∞ÇÈ
+	{
+		upDamage += effects;
+		for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
+		{
+			if (bullets[bulletcount] != nullptr)
+			{
+				bullets[bulletcount]->UpDamage(effects);
+			}
+		}
 	}
 }
 
@@ -91,6 +103,13 @@ void Player::Draw()const
 #ifdef DEBUG
 	DrawString(0, 0, "ÉvÉåÉCÉÑÅ[", 0x00ff00);
 	DrawFormatString(0, 30, 0xffffff, "Player Life = %d", life);
+	for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
+	{
+		if (bullets[bulletcount] != nullptr)
+		{
+			DrawFormatString(0 + bulletcount * 60, 60, 0xffffff, "%d = %d", bulletcount,bullets[bulletcount]->GetDamage());
+		}
+	}
 #endif // DEBUG
 
 

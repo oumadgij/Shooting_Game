@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "common.h"
 #include "DropItem.h"
+#include <time.h>
 
 GameMain::GameMain()
 {
@@ -97,8 +98,9 @@ void GameMain::HitCheck()
 						{
 							if (item[itemCount] == nullptr)
 							{
+								srand((unsigned int)time(NULL));
 								//アイテムを生成する
-								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, 0, 0.8f);
+								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 2, 0.8f);
 								break;
 							}
 						}
@@ -189,4 +191,6 @@ void GameMain::Draw() const
 			item[itemCount]->Draw();
 		}
 	}
+
+	DrawString(1000, 0, "escキーで終わる",0xffffff);
 }

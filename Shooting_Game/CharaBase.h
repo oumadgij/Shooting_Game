@@ -20,5 +20,5 @@ public:
 protected:
 	int image;
 	float speed;
-	BulletsBase** bullets;  //’e@‰¼’u‚« TO DO
+	BulletsBase** bullets;  //’e
 };

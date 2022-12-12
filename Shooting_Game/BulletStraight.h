@@ -4,7 +4,9 @@
 class BulletStraight :public BulletsBase
 {
 public:
-	BulletStraight(float x, float y,float speed,float r);
+	//コンストラクタ
+	BulletStraight();
+	BulletStraight(float x, float y,float speed,float r,int updamage);
 	//~BulletStraight();
 	//描画以外の更新を実装
 	void Update()override;

@@ -19,13 +19,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SceneManager sceneMng(new GameMain());   //シーンをゲームメインに設定
 
-	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr))
+	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr) && (!KeyInput::OnClick(PAD_INPUT_9)))
 	{
 		ClearDrawScreen();    //画面の初期化
 		KeyInput::Update();
 		sceneMng.Draw();
 
-		if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) SetMouseDispFlag(TRUE);  //TO DO
+		//if (CheckHitKey(KEY_INPUT_ESCAPE) != 0) SetMouseDispFlag(TRUE);  //マウスカーソルを表示する
 
 		ScreenFlip();   //裏画面の内容を表画面に反映
 	}
