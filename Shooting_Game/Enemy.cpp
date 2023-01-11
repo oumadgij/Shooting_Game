@@ -1,6 +1,9 @@
 #include "Enemy.h"
 #include "BulletStraight.h"
+#include "BulletVLine.h"
 #include "common.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 Enemy::Enemy(float Vx, float Vy,float r)
 {
@@ -11,6 +14,8 @@ Enemy::Enemy(float Vx, float Vy,float r)
 	location.x = Vx;
 	location.y = Vy;
 	shotCount = 0;
+	repelFlg = false;
+	eType = ENEMY_TYPE::DEFAULT;
 	bullets = new BulletsBase * [ENEMY_MAX_SHOT];
 	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
 	{
@@ -20,7 +25,7 @@ Enemy::Enemy(float Vx, float Vy,float r)
 
 void Enemy::Update()
 {
-	location.y += speed;
+	Move();
 
 	int bulletcount = 0;
 
@@ -34,7 +39,21 @@ void Enemy::Update()
 
 	if (++shotCount % 120 == 0)
 	{
-		bullets[bulletcount] = new BulletStraight(location.x, location.y+25,5.f,10,0);
+		if (eType == ENEMY_TYPE::STRAIGHT)  //ストレート
+		{
+			bullets[bulletcount] = new BulletStraight(location.x, location.y + 25, 5.f, 10, 0);
+		}
+		if (eType == ENEMY_TYPE::VLINE)     //V字
+		{
+			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 10, 85);
+			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 10, 95);
+		}
+		//if (eType == ENEMY_TYPE::REPEL && repelFlg)     //打ち返し
+		//{
+		//	bullets[bulletcount] = new BulletStraight(location.x, location.y, 5.f, 10, 0);
+		//	//repelFlg = false;
+		//}
+		shotCount = 0;
 	}
 
 	for (bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
@@ -48,6 +67,30 @@ void Enemy::Update()
 				DeleteBullet(bulletcount);
 			}
 		}
+	}
+}
+
+void Enemy::Move()
+{
+	location.y += speed;
+}
+
+void Enemy::SelectType(int type)
+{
+	switch (type)
+	{
+	case 0:
+		eType = ENEMY_TYPE::STRAIGHT;
+		break;
+	case 1:
+		eType = ENEMY_TYPE::VLINE;
+		break;
+	case 2:
+		eType = ENEMY_TYPE::REPEL;
+		break;
+	case 3:
+		eType = ENEMY_TYPE::DEFAULT;
+		break;
 	}
 }
 
@@ -71,8 +114,11 @@ void Enemy::Draw()const
 #ifdef DEBUG
 #endif // DEBUG
 
-
-	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(0, 100, 255), TRUE);
+	if (!repelFlg)
+	{
+		DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(0, 100, 255), TRUE);
+	}
+	
 	for (int bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] != nullptr)

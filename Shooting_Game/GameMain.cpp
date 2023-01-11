@@ -24,6 +24,7 @@ AbstractScene* GameMain::Update()
 {
 	player->Update();
 	int enemyCount;
+	/*エネミーの実体化*/
 	if (++waittime % 100 == 0)
 	{
 		for (enemyCount = 0; enemyCount < 10; enemyCount++)
@@ -31,12 +32,15 @@ AbstractScene* GameMain::Update()
 			if (enemy[enemyCount] == nullptr)//エネミーが存在しない時
 			{   //ランダム位置にエネミーを配置する
 				enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
+				//エネミーのタイプをランダムに決定する
+				enemy[enemyCount]->SelectType(2); //本来 rand() % 4
 				waittime = 0;
 				break;
 			}
 		}
 	}
 	
+	/*エネミーのUpDate*/
 	for (enemyCount = 0; enemyCount < 10; enemyCount++)
 	{
 		if (enemy[enemyCount] != nullptr)  //エネミーが存在する時
@@ -49,7 +53,8 @@ AbstractScene* GameMain::Update()
 			}
 		}
 	}
-
+	
+	/*アイテムのUpDate*/
 	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{
 		if (item[itemCount] != nullptr)  //アイテムが存在する時
@@ -96,17 +101,26 @@ void GameMain::HitCheck()
 					{  
 						for (int itemCount = 0; itemCount < 10; itemCount++)
 						{
-							if (item[itemCount] == nullptr)
+							if (item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
 							{
 								srand((unsigned int)time(NULL));
 								//アイテムを生成する
-								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 2, 0.8f);
+								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 5, 0.8f);
 								break;
 							}
 						}
-						//エネミーを消す
-						delete enemy[enemyCount];
-						enemy[enemyCount] = nullptr;
+						//エネミータイプが打ち返し以外の時
+						if (enemy[enemyCount]->GetEnemyType()!= ENEMY_TYPE::REPEL)
+						{
+							//エネミーを消す
+							delete enemy[enemyCount];
+							enemy[enemyCount] = nullptr;
+						}
+						else
+						{
+							enemy[enemyCount]->ChangeRepelFlg();
+						}
+
 						break;
 					}
 				}
@@ -130,6 +144,11 @@ void GameMain::HitCheck()
 					//当たった時
 					player->Hit(bullet[bulletCount]->GetDamage());  //プレイヤーのHPを減らす
 					enemy[enemyCount]->DeleteBullet(bulletCount); //弾を消す
+				}
+				//プレイヤーのHPが０になったか
+				if (player->LifeCheck())
+				{
+					//delete player;
 				}
 			}
 		}
@@ -175,8 +194,8 @@ void GameMain::Draw() const
 	}
 #endif // DEBUG
 
+	if(player != nullptr) player->Draw();
 
-	player->Draw();
 	for (int enemyCount = 0; enemyCount < 10; enemyCount++)
 	{
 		if (enemy[enemyCount] != nullptr)

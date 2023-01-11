@@ -10,7 +10,7 @@ enum class ITEM_TYPE
 
 enum class ITEM_EFFECTS
 {
-	HEAL = 10,  //‰ñ•œ—Ê
+	HEAL = 2,  //‰ñ•œ—Ê
 	ATTACK = 3, //ã‚ª‚éUŒ‚—Í
 	DEFAULT
 };

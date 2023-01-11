@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "KeyInput.h"
 #include "BulletStraight.h"
+#include "BulletVLine.h"
 #include "common.h"
 
 Player::Player()
@@ -13,6 +14,8 @@ Player::Player()
 	score = 0;
 	shotCount = 0;
 	upDamage = 0;
+	bulletLine = 0;
+	bType = BULLET_TYPE::STRAIGHT;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -42,9 +45,10 @@ void Player::Update()
 		}
 	}
 
-	if ((shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+	if ((++shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
-		bullets[bulletcount] = new BulletStraight(location.x, location.y,-5.f,5,upDamage);
+		BulletSelect(bulletcount);
+		shotCount = 0;
 	}
 
 	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
@@ -58,8 +62,6 @@ void Player::Update()
 			}
 		}
 	}
-
-	++shotCount;
 }
 
 void Player::Hit(int damage)
@@ -71,7 +73,10 @@ void Player::Hit(ITEM_TYPE item, int effects)
 {
 	if (item == ITEM_TYPE::HEAL)  //HPÇâÒïúÇ∑ÇÈ
 	{
-		life += effects;
+		if ((life += effects) >= 10)//HPÇÃè„å¿Çí¥Ç¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
+		{
+			life = 10;
+		}
 	}
 	if (item == ITEM_TYPE::ATTACK) //çUåÇóÕÇè„Ç∞ÇÈ
 	{
@@ -81,14 +86,38 @@ void Player::Hit(ITEM_TYPE item, int effects)
 			if (bullets[bulletcount] != nullptr)
 			{
 				bullets[bulletcount]->UpDamage(effects);
+				if (bullets[bulletcount]->GetDamage()>=5) //çUåÇóÕÇ™ÇTà»è„ÇÃéû
+				{
+					bulletLine = 2;
+					//DeleteBullet(bulletcount); 
+				}
 			}
 		}
 	}
 }
 
-void Player::LifeCheck()
+bool Player::LifeCheck()
 {
+	if (life <= 0)
+	{
+		return true;
+	}
 
+	return false;
+}
+
+void Player::BulletSelect(int bulletcount)
+{   /*   ÉXÉgÉåÅ[Ég   */
+	if (bType == BULLET_TYPE::STRAIGHT)
+	{
+
+		bullets[bulletcount] = new BulletStraight(location.x, location.y, -5.f, 5, upDamage);
+	}
+	if (bType == BULLET_TYPE::VLINE)
+	{
+		bullets[bulletcount] = new BulletVLine(location.x, location.y, -5.f, 5, 85);
+		bullets[bulletcount+1] = new BulletVLine(location.x, location.y, -5.f, 5, 95);
+	}
 }
 
 void Player::DeleteBullet(int bulletcount)
