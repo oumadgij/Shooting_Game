@@ -27,18 +27,19 @@ public:
 	void SelectType(int type);
 	//Hp‚ª0‚©
 	bool HpCheck();
+	//’e‚ğÁ‚·
+	void DeleteBullet(int bulletcount);
+	//‘Å‚¿•Ô‚µ‚Ì’e‚ÌÀ‘Ì‰»
+	void RepelMaterialization();
+	//ƒQƒbƒ^[
 	int GetPoint()const { return point; }
 	int GetHP()const { return hp; }
-	bool GetRepelFlg()const { return repelFlg; }
 	ENEMY_TYPE GetEnemyType()const { return eType; }
-	void DeleteBullet(int bulletcount);
-	void ChangeRepelFlg() { repelFlg = true; }
 
 private:
 	int hp;
 	int point;
 	int shotCount;
-	bool repelFlg;
 	ENEMY_TYPE eType;
 };
 

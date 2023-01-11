@@ -45,11 +45,27 @@ AbstractScene* GameMain::Update()
 	{
 		if (enemy[enemyCount] != nullptr)  //エネミーが存在する時
 		{
-			enemy[enemyCount]->Update(); //エネミーを動かす
-			if (enemy[enemyCount]->GetLocation().y-30 > 720)  //エネミーが画面外に行った時
+			enemy[enemyCount]->Update(); //エネミーと弾を動かす
+			if (720 < enemy[enemyCount]->GetLocation().y - 30)  //エネミーが画面外に行った時
 			{   //エネミーを消す
 				delete enemy[enemyCount];
 				enemy[enemyCount] = nullptr;
+				break;
+			}
+
+			//タイプが打ち返しで、HPが0のエネミー
+			if ((enemy[enemyCount]->GetEnemyType() == ENEMY_TYPE::REPEL) && 
+				(enemy[enemyCount]->HpCheck()))
+			{
+				BulletsBase** bullet;
+				bullet = enemy[enemyCount]->GetBullets();
+				//弾が存在しない時
+				if (bullet[0] == nullptr)
+				{
+					//エネミーを消す
+					delete enemy[enemyCount];
+					enemy[enemyCount] = nullptr;
+				}
 			}
 		}
 	}
@@ -116,11 +132,10 @@ void GameMain::HitCheck()
 							delete enemy[enemyCount];
 							enemy[enemyCount] = nullptr;
 						}
-						else
+						else //エネミータイプが打ち返しの時
 						{
-							enemy[enemyCount]->ChangeRepelFlg();
+							enemy[enemyCount]->RepelMaterialization();
 						}
-
 						break;
 					}
 				}
