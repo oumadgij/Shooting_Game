@@ -11,7 +11,6 @@ public:
 	void Update()override;
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ðŽÀ‘•
 	void Draw()const override;
-
 private:
 };
 

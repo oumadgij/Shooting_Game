@@ -30,9 +30,13 @@ private:
 	int x, y;    //À•W
 	int score;   //ƒXƒRƒA
 	int life;    //HP
-	int shotCount;
-	int upDamage;
-	int bulletLine;  //’e‚ªo‚é—ñ
-	BULLET_TYPE bType;
+	int shotCount;//UŒ‚ŠÔŠu
+	int upDamage; //UŒ‚—Í‚Ì‘‰Á—Ê
+	int bulletLine;  //’e‚ªo‚é—ñ   TODO ‚P—ñ‚©‚ç‚Q—ñ‚É‘‚â‚»‚¤‚Æ‚µ‚Äì‚Á‚½•Ï”B‚Ü‚¾ˆ—‚ğì‚Á‚Ä‚¢‚È‚¢
+	int interval;   //attackInterval‚Ì“Y‚¦š
+	int comparison; //damageComparison‚Ì“Y‚¦š
+	const int attackInterval[5] = { 5,10,15,20,25 };
+	const int damageComparison[5] = { 5,10,15,20,25 };
+	BULLET_TYPE bulletType;
 };
 

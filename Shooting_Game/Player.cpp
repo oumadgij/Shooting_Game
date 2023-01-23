@@ -14,8 +14,10 @@ Player::Player()
 	score = 0;
 	shotCount = 0;
 	upDamage = 0;
+	interval = 4;
+	comparison = 0;
 	bulletLine = 0;
-	bType = BULLET_TYPE::STRAIGHT;
+	bulletType = BULLET_TYPE::STRAIGHT;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -45,7 +47,7 @@ void Player::Update()
 		}
 	}
 
-	if ((++shotCount % 5) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+	if ((++shotCount % attackInterval[interval]) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
 		BulletSelect(bulletcount);
 		shotCount = 0;
@@ -82,14 +84,22 @@ void Player::Hit(ITEM_TYPE item, int effects)
 	{
 		upDamage += effects;
 		for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
-		{
+		{   //弾が存在する時攻撃力を上げる
 			if (bullets[bulletcount] != nullptr)
 			{
 				bullets[bulletcount]->UpDamage(effects);
-				if (bullets[bulletcount]->GetDamage()>=5) //攻撃力が５以上の時
+				if ((5 <= bullets[bulletcount]->GetDamage()) && //攻撃力が５以上かつ
+					(bulletType == BULLET_TYPE::STRAIGHT)) //弾のタイプがストレートの時
 				{
 					bulletLine = 2;
-					//DeleteBullet(bulletcount); 
+				}
+				//弾の発射間隔の調整
+				//ダメージが配列の中の数字よりも大きかったら、発射間隔を狭める
+				if (damageComparison[comparison] <= bullets[bulletcount]->GetDamage())
+				{
+					if (--interval <= 0)interval = 0;
+					++comparison;
+					break;
 				}
 			}
 		}
@@ -108,12 +118,13 @@ bool Player::LifeCheck()
 
 void Player::BulletSelect(int bulletcount)
 {   /*   ストレート   */
-	if (bType == BULLET_TYPE::STRAIGHT)
+	if (bulletType == BULLET_TYPE::STRAIGHT)
 	{
 
 		bullets[bulletcount] = new BulletStraight(location.x, location.y, -5.f, 5, upDamage);
 	}
-	if (bType == BULLET_TYPE::VLINE)
+	/*   　V　字　   */
+	if (bulletType == BULLET_TYPE::VLINE)
 	{
 		bullets[bulletcount] = new BulletVLine(location.x, location.y, -5.f, 5, 85);
 		bullets[bulletcount+1] = new BulletVLine(location.x, location.y, -5.f, 5, 95);
@@ -131,19 +142,30 @@ void Player::Draw()const
 #define DEBUG
 #ifdef DEBUG
 	DrawString(0, 0, "プレイヤー", 0x00ff00);
-	DrawFormatString(0, 30, 0xffffff, "Player Life = %d", life);
-	for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
+	DrawFormatString(0, 30, 0xffffff, "Player Life : %d", life);
+	DrawString(0, 60, "弾の種類 :", 0xffffff);
+	/*if (bulletType == BULLET_TYPE::STRAIGHT)
+	{
+		DrawString(90, 60, "ストレート", 0xffffff);
+	}
+	else if (bulletType == BULLET_TYPE::VLINE)
+	{
+		DrawString(90, 60, "V字", 0xffffff);
+	}*/
+	for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++) //弾の攻撃力
 	{
 		if (bullets[bulletcount] != nullptr)
 		{
 			DrawFormatString(0 + bulletcount * 60, 60, 0xffffff, "%d = %d", bulletcount,bullets[bulletcount]->GetDamage());
 		}
 	}
+	DrawFormatString(0, 90, 0xffffff, "Interval : %d", attackInterval[interval]);
 #endif // DEBUG
 
 
 	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(225, 0, 0), TRUE);
 
+	//弾の描画
 	for (int bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] != nullptr)

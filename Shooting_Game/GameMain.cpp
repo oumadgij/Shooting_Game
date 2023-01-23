@@ -33,7 +33,8 @@ AbstractScene* GameMain::Update()
 			{   //ランダム位置にエネミーを配置する
 				enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
 				//エネミーのタイプをランダムに決定する
-				enemy[enemyCount]->SelectType(2); //本来 rand() % 4
+				//0:ストレート 1:vライン 2:打ち返し 3:何もしない
+				enemy[enemyCount]->SelectType(rand() % 4);
 				waittime = 0;
 				break;
 			}
@@ -114,14 +115,14 @@ void GameMain::HitCheck()
 					}
 					//エネミーのHPが０になったか
 					if (enemy[enemyCount]->HpCheck())
-					{  
+					{   //アイテムの生成
 						for (int itemCount = 0; itemCount < 10; itemCount++)
 						{
+							//エネミータイプが打ち返し以外の時、アイテムを生成する
 							if (item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
 							{
 								srand((unsigned int)time(NULL));
-								//アイテムを生成する
-								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 5, 0.8f);
+								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, /*rand() % 5*/1, 0.8f);
 								break;
 							}
 						}

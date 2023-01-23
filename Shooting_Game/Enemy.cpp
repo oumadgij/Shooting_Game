@@ -5,37 +5,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-//メモ  同じ行動をするキャラ
-//VECTOR locations[3] =　目的地
-//{
-//	{640,150},
-//	{1200.4,150,},
-//	{80.2,150},
-//};
-//int next[3] = { 1,2,1 };
-//int current = 0;
-//
-//structを使用すれば、↑のnextとlocationsの２つを合体することができる
-// ↓使わない
-// struct Infomation
-// {
-//   int pattern;   //行動パターン
-//   Vector destination;  //目的地
-//   int next;  //次の配列番号
-//   int waitframetime;  //待ち時間
-//   int attacktype;  //攻撃の種類
-// }
-// 
-// Infomation moveinfo[  ]=
-// {
-//    {0,640,150,1,0,0};
-//    {0,1200.4,150,2,0,2};
-//    {1,0,0,3,300,1};
-//    {0,80.2,150,4,0,2};
-//    {1,0,0,1,300,1};
-//     ...etc
-// }
-//
 
 Enemy::Enemy(float Vx, float Vy,float r)
 {
@@ -101,19 +70,6 @@ void Enemy::Update()
 void Enemy::Move()
 {
 	location.y += speed;
-
-	//メモ
-	//if ((location.x == locations[current].x) && (location.y == locations[current].y))
-	//{
-	//	current = next[current];
-	//}
-	//else{
-	//	//目的地からx座標が違う時、
-	//	//locations[current]がlocationより大きいなら、スピードを今の座標に＋
-	//	//locations[current]がlocationより小さいなら、スピードを今の座標にー
-	//  //計算した結果が、locations[current]を飛び越してしまったらlocations[cureent]を代入する
-	//  ** 不等号の向きは統一した方が読みやすい  <  ←推奨
-	//}
 }
 
 /*敵の動きタイプを選ぶ*/
@@ -122,16 +78,16 @@ void Enemy::SelectType(int type)
 	switch (type)
 	{
 	case 0:
-		eType = ENEMY_TYPE::STRAIGHT;
+		eType = ENEMY_TYPE::STRAIGHT;  //ストレート
 		break;
 	case 1:
-		eType = ENEMY_TYPE::VLINE;
+		eType = ENEMY_TYPE::VLINE;     //V字
 		break;
 	case 2:
-		eType = ENEMY_TYPE::REPEL;
+		eType = ENEMY_TYPE::REPEL;     //打ち返し
 		break;
 	case 3:
-		eType = ENEMY_TYPE::DEFAULT;
+		eType = ENEMY_TYPE::DEFAULT;   //何もしない
 		break;
 	}
 }
