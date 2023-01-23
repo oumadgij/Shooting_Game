@@ -35,8 +35,8 @@ private:
 	int bulletLine;  //’e‚ªo‚é—ñ   TODO ‚P—ñ‚©‚ç‚Q—ñ‚É‘‚â‚»‚¤‚Æ‚µ‚Äì‚Á‚½•Ï”B‚Ü‚¾ˆ—‚ğì‚Á‚Ä‚¢‚È‚¢
 	int interval;   //attackInterval‚Ì“Y‚¦š
 	int comparison; //damageComparison‚Ì“Y‚¦š
-	const int attackInterval[5] = { 5,10,15,20,25 };
-	const int damageComparison[5] = { 5,10,15,20,25 };
+	const int attackInterval[5] = { 6,12,18,24,30 };  //’e‚ğo‚·‘¬‚³
+	const int damageComparison[5] = { 5,10,15,20,25 };  //’e‚ÌËo‘¬“x‚ğ•ÏX‚·‚éUŒ‚—Í‚Ì–ÚˆÀ
 	BULLET_TYPE bulletType;
 };
 

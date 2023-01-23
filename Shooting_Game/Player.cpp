@@ -47,7 +47,7 @@ void Player::Update()
 		}
 	}
 
-	if ((++shotCount % attackInterval[interval]) == 0 && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+	if ((attackInterval[interval] <= ++shotCount) && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
 		BulletSelect(bulletcount);
 		shotCount = 0;
