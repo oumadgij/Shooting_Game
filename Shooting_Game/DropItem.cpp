@@ -5,6 +5,8 @@ DropItem::DropItem(VECTOR location, float radius, int type, float speed)
 	this->location = location;
 	this->radius = radius;
 	this->speed = speed;
+	this->type = ITEM_TYPE::DEFAULT;
+	effects = ITEM_EFFECTS::DEFAULT;
 	//É^ÉCÉv
 	if (type == 0)
 	{

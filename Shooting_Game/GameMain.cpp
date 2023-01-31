@@ -1,7 +1,6 @@
 #include "GameMain.h"
 #include "DxLib.h"
 #include "common.h"
-#include "DropItem.h"
 #include <time.h>
 
 GameMain::GameMain()
@@ -12,10 +11,10 @@ GameMain::GameMain()
 	{
 		enemy[i] = nullptr;
 	}
-	item = new ItemBase * [10];
+	drop_item = new DropItem * [10];
 	for (int i = 0; i < 10; i++)
 	{
-		item[i] = nullptr;
+		drop_item[i] = nullptr;
 	}
 	waittime = 0;
 }
@@ -74,14 +73,14 @@ AbstractScene* GameMain::Update()
 	/*アイテムのUpDate*/
 	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{
-		if (item[itemCount] != nullptr)  //アイテムが存在する時
+		if (drop_item[itemCount] != nullptr)  //アイテムが存在する時
 		{
-			item[itemCount]->Update();
-			if (item[itemCount]->GetLocation().y - 5 > 720) //エネミーが画面外に行った時
+			drop_item[itemCount]->Update();
+			if (drop_item[itemCount]->GetLocation().y - 5 > 720) //エネミーが画面外に行った時
 			{
 				//アイテムを消す
-				delete item[itemCount];
-				item[itemCount] = nullptr;
+				delete drop_item[itemCount];
+				drop_item[itemCount] = nullptr;
 			}
 		}
 	}
@@ -119,10 +118,10 @@ void GameMain::HitCheck()
 						for (int itemCount = 0; itemCount < 10; itemCount++)
 						{
 							//エネミータイプが打ち返し以外の時、アイテムを生成する
-							if (item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
+							if (drop_item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
 							{
 								srand((unsigned int)time(NULL));
-								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 5, 0.8f);
+								drop_item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, 1, 0.8f); //rand() % 5
 								break;
 							}
 						}
@@ -173,14 +172,14 @@ void GameMain::HitCheck()
 	/*アイテムとプレイヤーの当たり判定*/
 	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{   //アイテムが存在するか
-		if (item[itemCount] == nullptr) continue;
+		if (drop_item[itemCount] == nullptr) continue;
 
 		//プレイヤーがアイテムに当たったか
-		if (item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
+		if (drop_item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
 		{   //アイテムの効果をプレイヤーに反映する
-			player->Hit(item[itemCount]->GetType(), static_cast<int>(item[itemCount]->GetEffects()));
-			delete item[itemCount];
-			item[itemCount] = nullptr;
+			player->Hit(drop_item[itemCount]->GetType(), static_cast<int>(drop_item[itemCount]->GetEffects()));
+			delete drop_item[itemCount];
+			drop_item[itemCount] = nullptr;
 		}
 	}
 }
@@ -221,9 +220,9 @@ void GameMain::Draw() const
 	}
 	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{
-		if (item[itemCount] != nullptr)  //アイテムが存在する時
+		if (drop_item[itemCount] != nullptr)  //アイテムが存在する時
 		{
-			item[itemCount]->Draw();
+			drop_item[itemCount]->Draw();
 		}
 	}
 

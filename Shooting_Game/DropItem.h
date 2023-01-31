@@ -1,6 +1,20 @@
 #pragma once
 #include "ItemBase.h"
 
+enum class ITEM_TYPE
+{
+	HEAL = 0,   //HP‰ñ•œ
+	ATTACK,     //UŒ‚—ÍƒAƒbƒv
+	DEFAULT
+};
+
+enum class ITEM_EFFECTS
+{
+	HEAL = 2,  //‰ñ•œ—Ê
+	ATTACK = 1, //ã‚ª‚éUŒ‚—Í
+	DEFAULT
+};
+
 class DropItem :public ItemBase
 {
 public:
@@ -9,7 +23,11 @@ public:
 	virtual void Update()override;
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
 	virtual void Draw()const override;
+	ITEM_TYPE GetType()const { return type; }
+	ITEM_EFFECTS GetEffects()const { return effects; }
 
 private:
+	ITEM_TYPE type;
+	ITEM_EFFECTS effects;
 };
 

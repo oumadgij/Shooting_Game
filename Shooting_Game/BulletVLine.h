@@ -4,7 +4,7 @@ class BulletVLine : public BulletsBase
 {
 public:
 	//コンストラクタ
-	BulletVLine(float x, float y, float sp, float r, int angle);
+	BulletVLine(float x, float y, float sp, float r, int angle,int updamage);
 	//描画以外の更新を実装
 	void Update()override;
 	//描画に関することを実装

@@ -16,9 +16,10 @@ Player::Player()
 	shotCount = 0;
 	upDamage = 0;
 	interval = 4;
-	comparison = 0;
+	dComparison = 0;
+	bComparison = 0;
 	bulletLine = 0;
-	bulletType = BULLET_TYPE::COMPOSITE;
+	bulletType = BULLET_TYPE::STRAIGHT;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -50,7 +51,8 @@ void Player::Update()
 
 	//shotCountがattackIntervalの中の数値より大きくなった＆マウスの左側を押されたら
 	//弾を実体化
-	if ((attackInterval[interval] <= ++shotCount) && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+	if ((attackInterval[interval] <= ++shotCount) && 
+		(KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
 		BulletSelect(bulletcount);
 		shotCount = 0;
@@ -91,17 +93,29 @@ void Player::Hit(ITEM_TYPE item, int effects)
 			if (bullets[bulletcount] != nullptr)
 			{
 				bullets[bulletcount]->UpDamage(effects);
-				if ((5 <= bullets[bulletcount]->GetDamage()) && //攻撃力が５以上かつ
-					(bulletType == BULLET_TYPE::STRAIGHT)) //弾のタイプがストレートの時
+				//弾の種類の変更
+				//ダメージが配列の中の数字よりも大きかったら、種類を変更する
+				if ((bulletComparison[bComparison] <= bullets[bulletcount]->GetDamage())
+					&& (bComparison <= 1))
 				{
-					bulletLine = 2;
+					switch (bComparison)
+					{
+					case 0:
+						bulletType = BULLET_TYPE::VLINE;
+						break;
+					case 1:
+						bulletType = BULLET_TYPE::COMPOSITE;
+						break;
+					}
+					++bComparison;
 				}
 				//弾の発射間隔の調整
 				//ダメージが配列の中の数字よりも大きかったら、発射間隔を狭める
-				if (damageComparison[comparison] <= bullets[bulletcount]->GetDamage())
+				if ((damageComparison[dComparison] <= bullets[bulletcount]->GetDamage())
+					&& (0 <= interval))
 				{
-					if (--interval <= 0)interval = 0;
-					++comparison;
+					--interval;
+					++dComparison;
 					break;
 				}
 			}
@@ -129,8 +143,8 @@ void Player::BulletSelect(int bulletcount)
 	/*   　V　字　   */
 	if (bulletType == BULLET_TYPE::VLINE)
 	{
-		bullets[bulletcount] = new BulletVLine(location.x, location.y, -5.f, 5, 85);
-		bullets[bulletcount+1] = new BulletVLine(location.x, location.y, -5.f, 5, 95);
+		bullets[bulletcount] = new BulletVLine(location.x, location.y, -5.f, 5, 85,upDamage);
+		bullets[bulletcount+1] = new BulletVLine(location.x, location.y, -5.f, 5, 95,upDamage);
 	}
 	/* V字とストレートを合体したもの */
 	if (bulletType == BULLET_TYPE::COMPOSITE)

@@ -1,20 +1,6 @@
 #pragma once
 #include "SphereCollider.h"
 
-enum class ITEM_TYPE
-{
-	HEAL = 0,   //HP‰ñ•œ
-	ATTACK,     //UŒ‚—ÍƒAƒbƒv
-	DEFAULT
-};
-
-enum class ITEM_EFFECTS
-{
-	HEAL = 2,  //‰ñ•œ—Ê
-	ATTACK = 1, //ã‚ª‚éUŒ‚—Í
-	DEFAULT
-};
-
 class ItemBase:public SphereCollider
 {
 public:
@@ -26,11 +12,7 @@ public:
 	virtual void Update() = 0;
 	//•`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
 	virtual void Draw()const = 0;
-	ITEM_TYPE GetType()const { return type; }
-	ITEM_EFFECTS GetEffects()const { return effects; }
 
 protected:
 	float speed;
-	ITEM_TYPE type;
-	ITEM_EFFECTS effects;
 };

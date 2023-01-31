@@ -1,7 +1,7 @@
 #pragma once
 #include "CharaBase.h"
 #include "SphereCollider.h"
-#include "ItemBase.h"
+#include "DropItem.h"
 
 enum class BULLET_TYPE
 {
@@ -35,9 +35,11 @@ private:
 	int upDamage; //UŒ‚—Í‚Ì‘‰Á—Ê
 	int bulletLine;  //’e‚ªo‚é—ñ   TODO ‚P—ñ‚©‚ç‚Q—ñ‚É‘‚â‚»‚¤‚Æ‚µ‚Äì‚Á‚½•Ï”B‚Ü‚¾ˆ—‚ğì‚Á‚Ä‚¢‚È‚¢
 	int interval;   //attackInterval‚Ì“Y‚¦š
-	int comparison; //damageComparison‚Ì“Y‚¦š
+	int dComparison = 0; //damageComparison[]‚Ì“Y‚¦š
+	int bComparison = 0; //bulletComparison[]‚Ì“Y‚¦š
 	const int attackInterval[5] = { 6,12,18,24,30 };  //’e‚ğo‚·‘¬‚³
-	const int damageComparison[5] = { 5,10,15,20,25 };  //’e‚ÌËo‘¬“x‚ğ•ÏX‚·‚éUŒ‚—Í‚Ì–ÚˆÀ
+	const int damageComparison[5] = { 5,10,15,20,25 };  //’e‚ÌËo‘¬“x‚ğ•ÏX‚·‚é‚½‚ß‚ÌUŒ‚—Í‚Ì–ÚˆÀ
+	const int bulletComparison[2] = { 13,18 };   //’e‚Ìí—Ş‚ğ•ÏX‚·‚é‚½‚ß‚ÌUŒ‚—Í‚Ì–ÚˆÀ
 	BULLET_TYPE bulletType;
 };
 

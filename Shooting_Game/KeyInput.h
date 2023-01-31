@@ -21,7 +21,7 @@ private:
 
 	static int oldMouse;   //前回の入力キー(マウス)
 	static int nowMouse;   //今回の入力キー(マウス)
-	static int oldKey;     //前回の入力キー(マウス)
-	static int nowKey;     //今回の入力キー(マウス)
+	static int oldKey;     //前回の入力キー(キーボード)
+	static int nowKey;     //今回の入力キー(キーボード)
 };
 

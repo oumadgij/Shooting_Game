@@ -46,8 +46,8 @@ void Enemy::Update()
 		}
 		if (eType == ENEMY_TYPE::VLINE)     //VŽš
 		{
-			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 5, 85);  //radius Œ³10  TODO
-			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 5, 95);  //radius Œ³10  TODO
+			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 5, 85,0);  //radius Œ³10  TODO
+			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 5, 95,0);  //radius Œ³10  TODO
 		}
 		shotCount = 0;
 	}

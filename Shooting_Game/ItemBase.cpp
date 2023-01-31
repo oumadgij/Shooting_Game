@@ -7,6 +7,4 @@ ItemBase::ItemBase()
 	location.z = 0;
 	radius = 0;
 	speed = 0;
-	effects = ITEM_EFFECTS::DEFAULT;
-	type = ITEM_TYPE::DEFAULT;
 }

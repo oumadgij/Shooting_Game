@@ -2,7 +2,8 @@
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "ItemBase.h"
+#include "DropItem.h"
+
 class GameMain : public AbstractScene
 {
 public:
@@ -13,7 +14,7 @@ public:
 	{ 
 		delete player; 
 		delete enemy;
-		delete item;
+		delete drop_item;
 	}
 	//当たり判定
 	void HitCheck();
@@ -24,7 +25,7 @@ private:
 	int waittime;
 
 	Player* player;
-	Enemy** enemy;    //ポインタ配列
-	ItemBase** item;
+	Enemy** enemy;
+	DropItem** drop_item;
 };
 
