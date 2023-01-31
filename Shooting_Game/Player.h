@@ -6,7 +6,8 @@
 enum class BULLET_TYPE
 {
 	STRAIGHT,   //ストレート
-	VLINE       //V字
+	VLINE,      //V字
+	COMPOSITE   //V字とストレートの複合
 };
 
 class Player : public CharaBase,public SphereCollider

@@ -42,12 +42,12 @@ void Enemy::Update()
 		//弾の実体化
 		if (eType == ENEMY_TYPE::STRAIGHT)  //ストレート
 		{
-			bullets[bulletcount] = new BulletStraight(location.x, location.y + 25, 5.f, 10, 0);
+			bullets[bulletcount] = new BulletStraight(location.x, location.y + 25, 5.f, 5, 0);  //radius 元10  TODO
 		}
 		if (eType == ENEMY_TYPE::VLINE)     //V字
 		{
-			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 10, 85);
-			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 10, 95);
+			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 5, 85);  //radius 元10  TODO
+			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 5, 95);  //radius 元10  TODO
 		}
 		shotCount = 0;
 	}

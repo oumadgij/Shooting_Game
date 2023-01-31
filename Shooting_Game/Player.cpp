@@ -2,6 +2,7 @@
 #include "KeyInput.h"
 #include "BulletStraight.h"
 #include "BulletVLine.h"
+#include "BulletComposite.h"
 #include "common.h"
 
 Player::Player()
@@ -17,7 +18,7 @@ Player::Player()
 	interval = 4;
 	comparison = 0;
 	bulletLine = 0;
-	bulletType = BULLET_TYPE::STRAIGHT;
+	bulletType = BULLET_TYPE::COMPOSITE;
 	bullets = new BulletsBase * [MAX_SHOT];
 	for (int i = 0; i < MAX_SHOT; i++)
 	{
@@ -47,6 +48,8 @@ void Player::Update()
 		}
 	}
 
+	//shotCountがattackIntervalの中の数値より大きくなった＆マウスの左側を押されたら
+	//弾を実体化
 	if ((attackInterval[interval] <= ++shotCount) && (KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
 	{
 		BulletSelect(bulletcount);
@@ -128,6 +131,13 @@ void Player::BulletSelect(int bulletcount)
 	{
 		bullets[bulletcount] = new BulletVLine(location.x, location.y, -5.f, 5, 85);
 		bullets[bulletcount+1] = new BulletVLine(location.x, location.y, -5.f, 5, 95);
+	}
+	/* V字とストレートを合体したもの */
+	if (bulletType == BULLET_TYPE::COMPOSITE)
+	{
+		bullets[bulletcount] = new BulletComposite(location.x, location.y, -5.f, 5, 80, upDamage);
+		bullets[bulletcount+1] = new BulletComposite(location.x, location.y, -5.f, 5, 90, upDamage);
+		bullets[bulletcount+2] = new BulletComposite(location.x, location.y, -5.f, 5, 100, upDamage);
 	}
 }
 

@@ -122,7 +122,7 @@ void GameMain::HitCheck()
 							if (item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
 							{
 								srand((unsigned int)time(NULL));
-								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, /*rand() % 5*/1, 0.8f);
+								item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 5, 0.8f);
 								break;
 							}
 						}
