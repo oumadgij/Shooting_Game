@@ -23,6 +23,8 @@ public:
 
 private:
 	int waittime;
+	int secenWaitTime; //シーン遷移までの待ち時間
+	bool playerDie;  //プレイヤーが死んだかどうか true:死んだ false:死んでいない
 
 	Player* player;
 	Enemy** enemy;

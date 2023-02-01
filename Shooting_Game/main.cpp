@@ -1,6 +1,6 @@
 #include "DxLib.h"
 #include "SceneManager.h"
-#include "GameMain.h"
+#include "Title.h"
 #include "KeyInput.h"
 #include "common.h"
 
@@ -17,7 +17,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SetMouseDispFlag(FALSE);     //マウスカーソルの表示 TRUE:表示する FALSE:表示しない 
 
-	SceneManager sceneMng(new GameMain());   //シーンをゲームメインに設定
+	SceneManager sceneMng(new Title());   //シーンをTitleに設定
 
 	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr) && (!KeyInput::OnClick(PAD_INPUT_9)))
 	{

@@ -2,7 +2,7 @@
 
 BulletsBase::BulletsBase()
 {
-	damage = 0;
+	damage = 1;
 	speed = 0.f;
 	image = 0;
 }

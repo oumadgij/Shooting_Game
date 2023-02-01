@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "common.h"
 #include <time.h>
+#include "GameOver.h"
 
 GameMain::GameMain()
 {
@@ -17,11 +18,18 @@ GameMain::GameMain()
 		drop_item[i] = nullptr;
 	}
 	waittime = 0;
+	secenWaitTime = 0;
+	playerDie = false;
 }
 
 AbstractScene* GameMain::Update()
 {
-	player->Update();
+	//プレイヤーが死んでいない時のみ操作を受け付ける
+	if (!playerDie)
+	{
+		player->Update();
+	}
+
 	int enemyCount;
 	/*エネミーの実体化*/
 	if (++waittime % 100 == 0)
@@ -85,7 +93,14 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
+	//弾やアイテムの当たり判定
 	HitCheck();
+
+	//プレイヤーが死亡して３秒たった時GameOverシーンに遷移
+	if (playerDie)
+	{
+		if(++secenWaitTime <= 1800) return new GameOver();
+	}
 
 	return this;
 }
@@ -163,7 +178,7 @@ void GameMain::HitCheck()
 				//プレイヤーのHPが０になったか
 				if (player->LifeCheck())
 				{
-					//delete player;
+					playerDie = true;  //プレイヤーの生死フラグをtrueにする
 				}
 			}
 		}

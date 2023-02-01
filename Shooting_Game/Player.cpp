@@ -96,7 +96,7 @@ void Player::Hit(ITEM_TYPE item, int effects)
 				//弾の種類の変更
 				//ダメージが配列の中の数字よりも大きかったら、種類を変更する
 				if ((bulletComparison[bComparison] <= bullets[bulletcount]->GetDamage())
-					&& (bComparison <= 1))
+					&& (bComparison < 1))
 				{
 					switch (bComparison)
 					{
