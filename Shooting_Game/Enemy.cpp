@@ -15,7 +15,7 @@ Enemy::Enemy(float Vx, float Vy,float r)
 	location.x = Vx;
 	location.y = Vy;
 	shotCount = 0;
-	eType = ENEMY_TYPE::DEFAULT;
+	enemyType = ENEMY_TYPE::DEFAULT;
 	bullets = new BulletsBase * [ENEMY_MAX_SHOT];
 	for (int i = 0; i < ENEMY_MAX_SHOT; i++)
 	{
@@ -40,11 +40,11 @@ void Enemy::Update()
 	if (++shotCount % 120 == 0)
 	{
 		//弾の実体化
-		if (eType == ENEMY_TYPE::STRAIGHT)  //ストレート
+		if (enemyType == ENEMY_TYPE::STRAIGHT)  //ストレート
 		{
 			bullets[bulletcount] = new BulletStraight(location.x, location.y + 25, 5.f, 5, 0);  //radius 元10  TODO
 		}
-		if (eType == ENEMY_TYPE::VLINE)     //V字
+		if (enemyType == ENEMY_TYPE::VLINE)     //V字
 		{
 			bullets[bulletcount] = new BulletVLine(location.x, location.y, 5.f, 5, 85,0);  //radius 元10  TODO
 			bullets[bulletcount + 1] = new BulletVLine(location.x, location.y, 5.f, 5, 95,0);  //radius 元10  TODO
@@ -78,16 +78,16 @@ void Enemy::SelectType(int type)
 	switch (type)
 	{
 	case 0:
-		eType = ENEMY_TYPE::STRAIGHT;  //ストレート
+		enemyType = ENEMY_TYPE::STRAIGHT;  //ストレート
 		break;
 	case 1:
-		eType = ENEMY_TYPE::VLINE;     //V字
+		enemyType = ENEMY_TYPE::VLINE;     //V字
 		break;
 	case 2:
-		eType = ENEMY_TYPE::REPEL;     //打ち返し
+		enemyType = ENEMY_TYPE::REPEL;     //打ち返し
 		break;
 	case 3:
-		eType = ENEMY_TYPE::DEFAULT;   //何もしない
+		enemyType = ENEMY_TYPE::DEFAULT;   //何もしない
 		break;
 	}
 }
@@ -114,17 +114,32 @@ void Enemy::Draw()const
 #ifdef DEBUG
 #endif // DEBUG
 
-	//HPが0より大きい時表示する
+	//HPが0より大きい時敵を表示する
 	if (hp > 0)
 	{
-		DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(0, 100, 255), TRUE);
+		//ストレートで弾を撃つ敵の色 青
+		if (enemyType == ENEMY_TYPE::STRAIGHT)
+		{
+			DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), 0x0064C5, TRUE);
+		}
+		//V字で弾を撃つ敵の色 緑
+		if (enemyType == ENEMY_TYPE::VLINE)
+		{
+			DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), 0x008E69, TRUE);
+		}
+		//死んだときに弾を出す敵の色 ピンク
+		if (enemyType == ENEMY_TYPE::REPEL)
+		{
+			DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), 0xD5648D, TRUE);
+		}
 	}
 	
+	//弾の表示
 	for (int bulletcount = 0; bulletcount < ENEMY_MAX_SHOT; bulletcount++)
 	{
 		if (bullets[bulletcount] != nullptr)
 		{
-			DrawCircle(static_cast<int>(bullets[bulletcount]->GetLocation().x), static_cast<int>(bullets[bulletcount]->GetLocation().y), static_cast<int>(bullets[bulletcount]->GetRadius()), GetColor(255, 180, 0), TRUE);
+			DrawCircle(static_cast<int>(bullets[bulletcount]->GetLocation().x), static_cast<int>(bullets[bulletcount]->GetLocation().y), static_cast<int>(bullets[bulletcount]->GetRadius()), 0xFFB400, TRUE);
 		}
 	}
 }
@@ -141,7 +156,7 @@ void Enemy::RepelMaterialization()
 {
 	if (bullets[0] == nullptr)
 	{
-		if (eType == ENEMY_TYPE::REPEL)     //打ち返し
+		if (enemyType == ENEMY_TYPE::REPEL)     //打ち返し
 		{
 			bullets[0] = new BulletStraight(location.x, location.y, 5.f, 10, 0);
 		}

@@ -34,12 +34,12 @@ public:
 	//ƒQƒbƒ^[
 	int GetPoint()const { return point; }
 	int GetHP()const { return hp; }
-	ENEMY_TYPE GetEnemyType()const { return eType; }
+	ENEMY_TYPE GetEnemyType()const { return enemyType; }
 
 private:
 	int hp;
 	int point;
 	int shotCount;
-	ENEMY_TYPE eType;
+	ENEMY_TYPE enemyType;  //“G‚ª‘Å‚Â’e‚Ìí—Ş
 };
 
