@@ -29,15 +29,6 @@ Player::Player()
 
 void Player::Update()
 {
-	GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
-	location.x = static_cast<float>(x);
-	location.y = static_cast<float>(y);
-	//自機が画面外に行かないようにする
-	if (location.x < 0) location.x = 0.f;
-	else if (location.x > 1280) location.x = 1280.f;
-	if (location.y < 0) location.y = 0.f;
-	else if (location.y > 720) location.y = 720.f;
-
 	int bulletcount = 0;
 	
 	//空いている弾を探す
@@ -49,13 +40,26 @@ void Player::Update()
 		}
 	}
 
-	//shotCountがattackIntervalの中の数値より大きくなった＆マウスの左側を押されたら
-	//弾を実体化
-	if ((attackInterval[interval] <= ++shotCount) && 
-		(KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+	//プレイヤーが死んでいない時のみ操作を受け付ける
+	if (0 < life)
 	{
-		BulletSelect(bulletcount);
-		shotCount = 0;
+		GetMousePoint(&x, &y);   //マウスの座標を自機の座標に入れる
+		location.x = static_cast<float>(x);
+		location.y = static_cast<float>(y);
+		//自機が画面外に行かないようにする
+		if (location.x < 0) location.x = 0.f;
+		else if (location.x > 1280) location.x = 1280.f;
+		if (location.y < 0) location.y = 0.f;
+		else if (location.y > 720) location.y = 720.f;
+
+		//shotCountがattackIntervalの中の数値より大きくなった＆マウスの左側を押されたら
+		//弾を実体化
+		if ((attackInterval[interval] <= ++shotCount) &&
+			(KeyInput::OnPressed(MOUSE_INPUT_LEFT)))
+		{
+			BulletSelect(bulletcount);
+			shotCount = 0;
+		}
 	}
 
 	for (bulletcount = 0; bulletcount < MAX_SHOT; bulletcount++)

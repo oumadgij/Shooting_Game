@@ -22,7 +22,7 @@ public:
 	//“–‚½‚è”»’è
 	virtual void Hit(int damage)override;  //’e‚É“–‚½‚Á‚½‚Ìˆ—
 	void Hit(ITEM_TYPE item,int effects);  //ƒAƒCƒeƒ€‚É“–‚½‚Á‚½‚Ìˆ—
-	bool LifeCheck();
+	bool LifeCheck();  //HP‚ª‚O‚É‚È‚Á‚½‚©‚Ç‚¤‚© ture:‚O‚É‚È‚Á‚½ false:‚O‚Å‚È‚¢
 	void DeleteBullet(int bulletcount);
 	int GetScore()const { return score; }
 

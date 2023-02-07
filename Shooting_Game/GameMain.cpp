@@ -24,11 +24,7 @@ GameMain::GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	//プレイヤーが死んでいない時のみ操作を受け付ける
-	if (!playerDie)
-	{
-		player->Update();
-	}
+	player->Update();
 
 	int enemyCount;
 	/*エネミーの実体化*/

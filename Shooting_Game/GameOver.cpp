@@ -21,4 +21,5 @@ AbstractScene* GameOver::Update()
 void GameOver::Draw()const
 {
 	DrawString(300, 400, "  Game Over  ", 0xff00ff);
+	DrawString(300, 500, "左クリックでタイトルに戻る", 0xff00ff);
 }

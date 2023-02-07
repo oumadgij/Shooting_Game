@@ -1,8 +1,8 @@
 #include "DxLib.h"
 #include "SceneManager.h"
 #include "Title.h"
-#include "KeyInput.h"
 #include "common.h"
+#include "KeyInput.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 	LPSTR lpCmdLine, int nCmdShow)
@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SceneManager sceneMng(new Title());   //ƒV[ƒ“‚ğTitle‚Éİ’è
 
-	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr) && (!KeyInput::OnClick(PAD_INPUT_9)))
+	while ((ProcessMessage()==0) && (sceneMng.Update() != nullptr) && (!CheckHitKey(KEY_INPUT_ESCAPE)))
 	{
 		ClearDrawScreen();    //‰æ–Ê‚Ì‰Šú‰»
 		KeyInput::Update();
