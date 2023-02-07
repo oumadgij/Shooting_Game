@@ -99,7 +99,7 @@ AbstractScene* GameMain::Update()
 	//プレイヤーが死亡して３秒たった時GameOverシーンに遷移
 	if (playerDie)
 	{
-		if(++secenWaitTime <= 1800) return new GameOver();
+		if(180 <= ++secenWaitTime) return new GameOver();
 	}
 
 	return this;
@@ -136,7 +136,7 @@ void GameMain::HitCheck()
 							if (drop_item[itemCount] == nullptr && enemy[enemyCount]->GetEnemyType() != ENEMY_TYPE::REPEL)
 							{
 								srand((unsigned int)time(NULL));
-								drop_item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, 1, 0.8f); //rand() % 5
+								drop_item[itemCount] = new DropItem(enemy[enemyCount]->GetLocation(), 5, rand() % 5, 0.8f);
 								break;
 							}
 						}
@@ -192,7 +192,7 @@ void GameMain::HitCheck()
 		//プレイヤーがアイテムに当たったか
 		if (drop_item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
 		{   //アイテムの効果をプレイヤーに反映する
-			player->Hit(drop_item[itemCount]->GetType(), static_cast<int>(drop_item[itemCount]->GetEffects()));
+			player->Hit(drop_item[itemCount]->GetType(), drop_item[itemCount]->GetEffects(static_cast<int>(drop_item[itemCount]->GetType())));
 			delete drop_item[itemCount];
 			drop_item[itemCount] = nullptr;
 		}

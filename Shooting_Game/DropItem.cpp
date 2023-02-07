@@ -6,7 +6,6 @@ DropItem::DropItem(VECTOR location, float radius, int type, float speed)
 	this->radius = radius;
 	this->speed = speed;
 	this->type = ITEM_TYPE::DEFAULT;
-	effects = ITEM_EFFECTS::DEFAULT;
 	//ƒ^ƒCƒv
 	if (type == 0)
 	{
@@ -15,15 +14,6 @@ DropItem::DropItem(VECTOR location, float radius, int type, float speed)
 	if (type == 1)
 	{
 		this->type = ITEM_TYPE::ATTACK;
-	}
-	//Œø‰Ê
-	if (this->type == ITEM_TYPE::HEAL)
-	{
-		effects = ITEM_EFFECTS::HEAL;
-	}
-	if (this->type == ITEM_TYPE::ATTACK)
-	{
-		effects = ITEM_EFFECTS::ATTACK;
 	}
 }
 

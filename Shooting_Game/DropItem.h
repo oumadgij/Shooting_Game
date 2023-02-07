@@ -8,13 +8,6 @@ enum class ITEM_TYPE
 	DEFAULT
 };
 
-enum class ITEM_EFFECTS
-{
-	HEAL = 2,  //回復量
-	ATTACK = 1, //上がる攻撃力
-	DEFAULT
-};
-
 class DropItem :public ItemBase
 {
 public:
@@ -24,10 +17,10 @@ public:
 	//描画に関することを実装
 	virtual void Draw()const override;
 	ITEM_TYPE GetType()const { return type; }
-	ITEM_EFFECTS GetEffects()const { return effects; }
+	int GetEffects(int t)const { return effects[t]; }
 
 private:
-	ITEM_TYPE type;
-	ITEM_EFFECTS effects;
+	const int effects[3] = { 2,1,0 };  //効果 0列目:回復量 1列目:上がる攻撃量 2列目:なにもなし
+	ITEM_TYPE type;  //アイテムタイプ
 };
 
