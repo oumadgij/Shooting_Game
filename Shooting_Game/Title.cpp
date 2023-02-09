@@ -1,11 +1,12 @@
 #include "Title.h"
 #include "KeyInput.h"
 #include "GameMain.h"
-#include "DxLib.h"
+#include "common.h"
 
 Title::Title()
 {
-
+	englishFont = CreateFontToHandle("HARDCORE POSTER", 80, -1, DX_FONTTYPE_NORMAL);
+	japaneseFont = CreateFontToHandle("MS UI Gothic", 60, -1, DX_FONTTYPE_NORMAL);
 }
 
 AbstractScene* Title::Update()
@@ -20,5 +21,6 @@ AbstractScene* Title::Update()
 
 void Title::Draw()const
 {
-	DrawString(300, 450, "左クリックでゲームスタート", 0xff0000);
+	DrawFormatStringToHandle(WINDOW_WIDTH/5, 80, 0xffffff, englishFont, "Shooting Game");
+	DrawFormatStringToHandle(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2, 0xff0000, japaneseFont, "左クリックでゲームスタート");
 }

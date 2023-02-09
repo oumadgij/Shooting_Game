@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BulletComposite.cpp" />
     <ClCompile Include="BulletsBase.cpp" />
     <ClCompile Include="BulletStraight.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="BulletComposite.h" />
     <ClInclude Include="BulletsBase.h" />
     <ClInclude Include="BulletStraight.h" />

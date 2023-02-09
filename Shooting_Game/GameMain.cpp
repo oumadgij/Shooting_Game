@@ -7,6 +7,7 @@
 GameMain::GameMain()
 {
 	player = new Player;
+	boss = new Boss(400.f, 60.f, 60);
 	enemy = new Enemy * [10];
 	for (int i = 0; i < 10; i++)
 	{
@@ -28,21 +29,21 @@ AbstractScene* GameMain::Update()
 
 	int enemyCount;
 	/*エネミーの実体化*/
-	if (++waittime % 100 == 0)
-	{
-		for (enemyCount = 0; enemyCount < 10; enemyCount++)
-		{
-			if (enemy[enemyCount] == nullptr)//エネミーが存在しない時
-			{   //ランダム位置にエネミーを配置する
-				enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
-				//エネミーのタイプをランダムに決定する
-				//0:ストレート 1:vライン 2:打ち返し 3:何もしない
-				enemy[enemyCount]->SelectType(rand() % 4);
-				waittime = 0;
-				break;
-			}
-		}
-	}
+	//if (++waittime % 100 == 0)
+	//{
+	//	for (enemyCount = 0; enemyCount < 10; enemyCount++)
+	//	{
+	//		if (enemy[enemyCount] == nullptr)//エネミーが存在しない時
+	//		{   //ランダム位置にエネミーを配置する
+	//			enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
+	//			//エネミーのタイプをランダムに決定する
+	//			//0:ストレート 1:vライン 2:打ち返し 3:何もしない
+	//			enemy[enemyCount]->SelectType(rand() % 4);
+	//			waittime = 0;
+	//			break;
+	//		}
+	//	}
+	//}
 	
 	/*エネミーのUpDate*/
 	for (enemyCount = 0; enemyCount < 10; enemyCount++)
@@ -220,8 +221,10 @@ void GameMain::Draw() const
 	}
 #endif // DEBUG
 
+	//プレイヤーの描画
 	if(player != nullptr) player->Draw();
-
+	
+	//敵の描画
 	for (int enemyCount = 0; enemyCount < 10; enemyCount++)
 	{
 		if (enemy[enemyCount] != nullptr)
@@ -229,6 +232,11 @@ void GameMain::Draw() const
 			enemy[enemyCount]->Draw();
 		}
 	}
+
+	//ボスの描画
+	boss->Draw();
+
+	//アイテムの描画
 	for (int itemCount = 0; itemCount < 10; itemCount++)
 	{
 		if (drop_item[itemCount] != nullptr)  //アイテムが存在する時

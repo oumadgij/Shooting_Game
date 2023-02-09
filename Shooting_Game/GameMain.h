@@ -2,6 +2,7 @@
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "DropItem.h"
 
 class GameMain : public AbstractScene
@@ -26,6 +27,7 @@ private:
 	int secenWaitTime; //シーン遷移までの待ち時間
 	bool playerDie;  //プレイヤーが死んだかどうか true:死んだ false:死んでいない
 	Player* player;
+	Boss* boss;
 	Enemy** enemy;
 	DropItem** drop_item;
 };
