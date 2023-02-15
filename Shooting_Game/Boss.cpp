@@ -5,7 +5,7 @@
 
 Boss::Boss(float Vx, float Vy, float r)
 {
-	hp = 10;
+	hp = 10;  //Œ³‚Ì‘Ì—Í 1000
 	radius = r;
 	point = 0;
 	speed = 1.0f;
@@ -106,7 +106,7 @@ void Boss::Draw()const
 
 void Boss::Hit(int damage)
 {
-
+	hp -= damage;
 }
 
 void Boss::Move()
@@ -173,4 +173,13 @@ void Boss::DeleteBullet(int bulletcount)
 {
 	delete bullets[bulletcount];
 	bullets[bulletcount] = nullptr;
+}
+
+bool Boss::HpCheck()
+{
+	if (hp <= 0)
+	{
+		return true;
+	}
+	return false;
 }

@@ -28,6 +28,9 @@ public:
 	void InputCSV();
 	//’e‚ğÁ‚·
 	void DeleteBullet(int bulletcount);
+	//Hp‚ª0‚©’²‚×‚é
+	bool HpCheck();
+	int GetHP()const { return hp; }
 
 private:
 	int hp;

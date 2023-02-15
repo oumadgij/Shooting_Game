@@ -3,11 +3,12 @@
 #include "common.h"
 #include <time.h>
 #include "GameOver.h"
+#include "GameClear.h"
 
 GameMain::GameMain()
 {
 	player = new Player;
-	boss = new Boss(100.f, 70.f, 60);
+	boss = nullptr;
 	enemy = new Enemy * [10];
 	for (int i = 0; i < 10; i++)
 	{
@@ -27,7 +28,19 @@ AbstractScene* GameMain::Update()
 {
 	player->Update();
 
-	boss->Update();
+	/*ボスの実体化*/
+	if (boss == nullptr) boss = new Boss(100.f, 70.f, 60);
+
+	if (boss != nullptr)
+	{
+		boss->Update();
+
+		//ボスのHPが0になった時
+		if (boss->HpCheck())
+		{
+			return new GameClear();
+		}
+	}
 
 	int enemyCount;
 	/*エネミーの実体化*/
@@ -92,10 +105,10 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	//弾やアイテムの当たり判定
+	/*弾やアイテムの当たり判定*/
 	HitCheck();
 
-	//プレイヤーが死亡して３秒たった時GameOverシーンに遷移
+	/*プレイヤーが死亡して３秒たった時GameOverシーンに遷移*/
 	if (playerDie)
 	{
 		if(180 <= ++secenWaitTime) return new GameOver();
@@ -196,6 +209,52 @@ void GameMain::HitCheck()
 			drop_item[itemCount] = nullptr;
 		}
 	}
+
+	/*プレイヤーの弾とボスの当たり判定*/
+	//ボスが存在する時
+	if (boss != nullptr)
+	{
+		for (int bulletCount = 0; bulletCount < MAX_SHOT; bulletCount++)
+		{
+			//弾が存在する時
+			if (bullet[bulletCount] != nullptr)
+			{
+				//プレイヤーの弾がボスにあったたか
+				if (boss->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
+				{
+					//当たった時
+					boss->Hit(bullet[bulletCount]->GetDamage());  //ボスのHPを減らす
+					player->DeleteBullet(bulletCount);  //弾を消す
+				}
+			}
+		}
+	}
+
+	/*ボスの弾とプレイヤーの当たり判定*/
+	//ボスが存在するかどうか
+	if (boss != nullptr)
+	{
+		bullet = boss->GetBullets();
+
+		for (int bulletCount = 0; bulletCount < ENEMY_MAX_SHOT; bulletCount++)
+		{
+			//弾が存在する時
+			if (bullet[bulletCount] != nullptr)
+			{   //エネミーの弾がプレイヤーに当たったか
+				if (player->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
+				{
+					//当たった時
+					player->Hit(bullet[bulletCount]->GetDamage());  //プレイヤーのHPを減らす
+					boss->DeleteBullet(bulletCount); //弾を消す
+				}
+				//プレイヤーのHPが０になったか
+				if (player->LifeCheck())
+				{
+					playerDie = true;  //プレイヤーの生死フラグをtrueにする
+				}
+			}
+		}
+	}
 }
 
 void GameMain::Draw() const
@@ -221,6 +280,8 @@ void GameMain::Draw() const
 			}
 		}
 	}
+
+	if (boss != nullptr) DrawFormatString(0, 120, 0xffffff, "Boss: %2d", boss->GetHP());
 #endif // DEBUG
 
 	//プレイヤーの描画
@@ -236,7 +297,7 @@ void GameMain::Draw() const
 	}
 
 	//ボスの描画
-	boss->Draw();
+	if(boss != nullptr) boss->Draw();
 
 	//アイテムの描画
 	for (int itemCount = 0; itemCount < 10; itemCount++)
