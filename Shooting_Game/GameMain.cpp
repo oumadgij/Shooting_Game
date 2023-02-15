@@ -7,7 +7,7 @@
 GameMain::GameMain()
 {
 	player = new Player;
-	boss = new Boss(400.f, 60.f, 60);
+	boss = new Boss(100.f, 70.f, 60);
 	enemy = new Enemy * [10];
 	for (int i = 0; i < 10; i++)
 	{
@@ -26,6 +26,8 @@ GameMain::GameMain()
 AbstractScene* GameMain::Update()
 {
 	player->Update();
+
+	boss->Update();
 
 	int enemyCount;
 	/*エネミーの実体化*/

@@ -2,6 +2,15 @@
 #include "CharaBase.h"
 #include "SphereCollider.h"
 
+struct actionInfo
+{
+	int pattern;  //行動パターン
+	VECTOR destination; //目的地
+	int next;  //次の配列番号
+	int waittime; //待ち時間
+	int attacktype;  //攻撃の種類
+};
+
 class Boss :public CharaBase,public SphereCollider
 {
 public:
@@ -13,10 +22,20 @@ public:
 	virtual void Draw() const override;
 	//当たり判定
 	virtual void Hit(int damage) override;
+	//ボスを動かす
+	void Move();
+	//CSVファイル読み込み
+	void InputCSV();
+	//弾を消す
+	void DeleteBullet(int bulletcount);
 
 private:
 	int hp;
 	int point;
-	int shotCount;
+	int shotCount;   //弾が出る早さ
+	int waittime;    //次の行動に移るまでの待ち時間
+	int nowIndex;    //現在の添え字
+
+	actionInfo moveinfo[4];
 };
 

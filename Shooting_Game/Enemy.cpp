@@ -37,7 +37,7 @@ void Enemy::Update()
 		}
 	}
 
-	if (++shotCount % 120 == 0)
+	if (++shotCount <= 120)
 	{
 		//弾の実体化
 		if (enemyType == ENEMY_TYPE::STRAIGHT)  //ストレート

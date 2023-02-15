@@ -190,7 +190,6 @@ void Player::Draw()const
 	DrawFormatString(0, 90, 0xffffff, "Interval : %d", attackInterval[interval]);
 #endif // DEBUG
 
-
 	DrawCircle(static_cast<int>(location.x), static_cast<int>(location.y), static_cast<int>(radius), GetColor(225, 0, 0), TRUE);
 
 	//’e‚Ì•`‰æ
