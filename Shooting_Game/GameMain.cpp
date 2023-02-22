@@ -21,6 +21,7 @@ GameMain::GameMain()
 	}
 	waittime = 0;
 	secenWaitTime = 0;
+	bossAppearanceTime = 0;
 	playerDie = false;
 }
 
@@ -29,9 +30,22 @@ AbstractScene* GameMain::Update()
 	player->Update();
 
 	/*ボスの実体化*/
-	if (boss == nullptr) boss = new Boss(100.f, 70.f, 60);
+	//ゲームが始まって1分たった時ボスを実体化させる
+	if ((boss == nullptr)&&(3600 < ++bossAppearanceTime))
+	{
+		boss = new Boss(560.f, -10.f, 60);
+		bossAppearanceTime = 0;
+	}
 
-	if (boss != nullptr)
+	int enemyCount;
+
+	/*エネミーの存在を調べる*/
+	for (enemyCount = 0; enemyCount < 10; enemyCount++)
+	{
+		if (enemy[enemyCount] != nullptr) break;
+	}
+	/*ボス以外の敵がいなくなるまでボスは動かさない*/
+	if ((boss != nullptr)&& (enemyCount == 10))
 	{
 		boss->Update();
 
@@ -42,23 +56,23 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	int enemyCount;
 	/*エネミーの実体化*/
-	//if (++waittime % 100 == 0)
-	//{
-	//	for (enemyCount = 0; enemyCount < 10; enemyCount++)
-	//	{
-	//		if (enemy[enemyCount] == nullptr)//エネミーが存在しない時
-	//		{   //ランダム位置にエネミーを配置する
-	//			enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
-	//			//エネミーのタイプをランダムに決定する
-	//			//0:ストレート 1:vライン 2:打ち返し 3:何もしない
-	//			enemy[enemyCount]->SelectType(rand() % 4);
-	//			waittime = 0;
-	//			break;
-	//		}
-	//	}
-	//}
+	if (++waittime < 100 == 0)
+	{
+		for (enemyCount = 0; enemyCount < 10; enemyCount++)
+		{
+			//エネミーが存在しない時かつボスが存在しない時
+			if ((enemy[enemyCount] == nullptr) && (boss == nullptr))
+			{   //ランダム位置にエネミーを配置する
+				enemy[enemyCount] = new Enemy(static_cast<float>(rand() % WINDOW_WIDTH-50)+30, 0.f, 30);
+				//エネミーのタイプをランダムに決定する
+				//0:ストレート 1:vライン 2:打ち返し 3:何もしない
+				enemy[enemyCount]->SelectType(rand() % 4);
+				break;
+			}
+		}
+		waittime = 0;
+	}
 	
 	/*エネミーのUpDate*/
 	for (enemyCount = 0; enemyCount < 10; enemyCount++)
@@ -132,12 +146,15 @@ void GameMain::HitCheck()
 				//弾が存在する時
 				if (bullet[bulletCount] != nullptr)
 				{
-					//プレイヤーの弾がエネミーにあったたか
+					//プレイヤーの弾がエネミーに当たった時
 					if (enemy[enemyCount]->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
 					{
-						//当たった時
-						enemy[enemyCount]->Hit(bullet[bulletCount]->GetDamage());  //エネミーのHPを減らす
-						player->DeleteBullet(bulletCount);  //弾を消す
+						if (!enemy[enemyCount]->HpCheck())//死んだエネミーに弾があたるのを防ぐ
+						{
+							//エネミーのHPを減らす
+							enemy[enemyCount]->Hit(bullet[bulletCount]->GetDamage());
+							player->DeleteBullet(bulletCount);  //弾を消す
+						}
 					}
 					//エネミーのHPが０になったか
 					if (enemy[enemyCount]->HpCheck())
@@ -170,6 +187,26 @@ void GameMain::HitCheck()
 		}
 	}
 
+	/*プレイヤーの弾とボスの当たり判定*/
+	//ボスが存在する時
+	if (boss != nullptr)
+	{
+		for (int bulletCount = 0; bulletCount < MAX_SHOT; bulletCount++)
+		{
+			//弾が存在する時
+			if (bullet[bulletCount] != nullptr)
+			{
+				//プレイヤーの弾がボスにあったたか
+				if (boss->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
+				{
+					//当たった時
+					boss->Hit(bullet[bulletCount]->GetDamage());  //ボスのHPを減らす
+					player->DeleteBullet(bulletCount);  //弾を消す
+				}
+			}
+		}
+	}
+
 	/*エネミーの弾とプレイヤーの当たり判定*/
 	for (int enemyCount = 0; enemyCount < 10; enemyCount++)
 	{   //エネミーが存在するかどうか
@@ -191,40 +228,6 @@ void GameMain::HitCheck()
 				if (player->LifeCheck())
 				{
 					playerDie = true;  //プレイヤーの生死フラグをtrueにする
-				}
-			}
-		}
-	}
-
-	/*アイテムとプレイヤーの当たり判定*/
-	for (int itemCount = 0; itemCount < 10; itemCount++)
-	{   //アイテムが存在するか
-		if (drop_item[itemCount] == nullptr) continue;
-
-		//プレイヤーがアイテムに当たったか
-		if (drop_item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
-		{   //アイテムの効果をプレイヤーに反映する
-			player->Hit(drop_item[itemCount]->GetType(), drop_item[itemCount]->GetEffects(static_cast<int>(drop_item[itemCount]->GetType())));
-			delete drop_item[itemCount];
-			drop_item[itemCount] = nullptr;
-		}
-	}
-
-	/*プレイヤーの弾とボスの当たり判定*/
-	//ボスが存在する時
-	if (boss != nullptr)
-	{
-		for (int bulletCount = 0; bulletCount < MAX_SHOT; bulletCount++)
-		{
-			//弾が存在する時
-			if (bullet[bulletCount] != nullptr)
-			{
-				//プレイヤーの弾がボスにあったたか
-				if (boss->HitSphere(bullet[bulletCount]->GetLocation(), bullet[bulletCount]->GetRadius()))
-				{
-					//当たった時
-					boss->Hit(bullet[bulletCount]->GetDamage());  //ボスのHPを減らす
-					player->DeleteBullet(bulletCount);  //弾を消す
 				}
 			}
 		}
@@ -255,6 +258,20 @@ void GameMain::HitCheck()
 			}
 		}
 	}
+
+	/*アイテムとプレイヤーの当たり判定*/
+	for (int itemCount = 0; itemCount < 10; itemCount++)
+	{   //アイテムが存在するか
+		if (drop_item[itemCount] == nullptr) continue;
+
+		//プレイヤーがアイテムに当たったか
+		if (drop_item[itemCount]->HitSphere(player->GetLocation(), player->GetRadius()))
+		{   //アイテムの効果をプレイヤーに反映する
+			player->Hit(drop_item[itemCount]->GetType(), drop_item[itemCount]->GetEffects(static_cast<int>(drop_item[itemCount]->GetType())));
+			delete drop_item[itemCount];
+			drop_item[itemCount] = nullptr;
+		}
+	}
 }
 
 void GameMain::Draw() const
@@ -282,6 +299,7 @@ void GameMain::Draw() const
 	}
 
 	if (boss != nullptr) DrawFormatString(0, 120, 0xffffff, "Boss: %2d", boss->GetHP());
+	DrawFormatString(0, 500, 0xffffff, "Boss出現時間: %2d", bossAppearanceTime);
 #endif // DEBUG
 
 	//プレイヤーの描画

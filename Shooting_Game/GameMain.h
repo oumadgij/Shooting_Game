@@ -23,8 +23,9 @@ public:
 	virtual void Draw() const override;
 
 private:
-	int waittime;
+	int waittime;  //エネミー実体化の待ち時間
 	int secenWaitTime; //シーン遷移までの待ち時間
+	int bossAppearanceTime;  //ボス出現までの時間
 	bool playerDie;  //プレイヤーが死んだかどうか true:死んだ false:死んでいない
 	Player* player;
 	Boss* boss;
